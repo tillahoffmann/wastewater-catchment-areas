@@ -45,3 +45,14 @@ The command line utility :code:`geomapping.py` takes two geospatial datasets as 
                   (inferred if omitted)
      --crs2 CRS2  coordinate reference system of the second set of shapes
                   (inferred if omitted)
+
+Data
+----
+
+Running
+
+.. code::
+
+   make data
+
+will download a number of relevant datasets, such as LSOA and LAD boundaries, from the geoportal of the Office for National Statistics.
