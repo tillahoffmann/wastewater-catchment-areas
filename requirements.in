@@ -1,0 +1,8 @@
+fiona
+flake8
+numpy
+pyproj
+rtree
+shapely
+sphinx
+tqdm
