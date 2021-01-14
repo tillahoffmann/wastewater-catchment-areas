@@ -28,7 +28,7 @@ def __main__(args=None):
                         '(inferred if omitted)')
     parser.add_argument('--crs2', help='coordinate reference system of the second set of shapes '
                         '(inferred if omitted)')
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     # Get the coordinate system in which to evaluate intersections
     target_crs = pyproj.CRS(args.crs)
@@ -46,7 +46,7 @@ def __main__(args=None):
 
             properties_ = []
             shapes_ = []
-            for item in tqdm.tqdm(fp, desc=f'loading from {filename}'):
+            for item in tqdm.tqdm(fp, desc=f'loading from {filename} with CRS {source_crs}'):
                 # Load and transform to the target coordinate system
                 shape = shapely.geometry.shape(item['geometry'])
                 shape = shapely.ops.transform(transformer.transform, shape)

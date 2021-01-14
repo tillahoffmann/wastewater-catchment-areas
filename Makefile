@@ -11,7 +11,9 @@ docs :
 
 # Getting the data =================================================================================
 
-data : data/geoportal.statistics.gov.uk data/environment.data.gov.uk
+data : data/geoportal.statistics.gov.uk data/environment.data.gov.uk data/arcgis.com
+
+# --------------------------------------------------------------------------------------------------
 
 data/geoportal.statistics.gov.uk : \
 	data/geoportal.statistics.gov.uk/LSOA11_BGC.zip \
@@ -29,6 +31,8 @@ data/geoportal.statistics.gov.uk/LAD20_BGC.zip :
 	mkdir -p $(dir $@)
 	curl -L -o $@ https://opendata.arcgis.com/datasets/3b374840ce1b4160b85b8146b610cd0c_0.zip?outSR=%7B%22latestWkid%22%3A27700%2C%22wkid%22%3A27700%7D
 
+# --------------------------------------------------------------------------------------------------
+
 data/environment.data.gov.uk : data/environment.data.gov.uk/RiverBasins.zip
 
 # River catchment data
@@ -42,6 +46,14 @@ data/environment.data.gov.uk/RiverBasins.zip :
 	# Rezip and remove directory
 	zip -j $@ $@.dir/data/*
 	rm -rf $@.dir
+
+# --------------------------------------------------------------------------------------------------
+
+data/arcgis.com : data/arcgis.com/GBR_PostcodeSector.geojson
+
+data/arcgis.com/GBR_PostcodeSector.geojson :
+	python download_arcgis_dataset.py --username=${NAME} --password=${PASSWORD} \
+		--layer=$(notdir ${@:.geojson=}) d7542e434a5045d19cff3bd09536720d $(dir $@)
 
 # Processing the data ==============================================================================
 
