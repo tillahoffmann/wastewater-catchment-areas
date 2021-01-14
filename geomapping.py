@@ -100,7 +100,9 @@ def __main__(args=None):
         'areas': areas,
         'intersections': intersections,
     }
-    os.makedirs(os.path.split(args.output)[0], exist_ok=True)
+    directory = os.path.split(args.output)[0]
+    if directory:
+        os.makedirs(directory, exist_ok=True)
     with open(args.output, 'w') as fp:
         json.dump(result, fp, indent=2)
 
