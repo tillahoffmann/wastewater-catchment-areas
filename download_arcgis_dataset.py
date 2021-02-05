@@ -14,6 +14,7 @@ logging.basicConfig(level=logging.INFO)
 TYPE_LOOKUP = {
     'sqlTypeOther': 'str',
     'sqlTypeDouble': 'float',
+    'sqlType': 'str',
 }
 
 
@@ -41,15 +42,25 @@ def __main__(args=None):
         features = json.loads(layer.query().to_geojson)['features']
         LOGGER.info('retrieved %d features for layer %s', len(features), name)
 
-        # Get the coordinate system
+        # Get the coordinate system (cf. https://github.com/pyproj4/pyproj/issues/374)
         wkid = layer.properties['extent']['spatialReference']['wkid']
-        crs = pyproj.CRS.from_authority('esri', wkid)
+        try:
+            crs = pyproj.CRS.from_authority('esri', wkid)
+        except pyproj.exceptions.CRSError as ex:
+            if "crs not found" not in ex.args[0]:
+                raise
+            crs = pyproj.CRS.from_epsg(wkid)
 
-        # Generate a schema
+        # Generate a schema based on the values present
+        properties = {}
+        for feature in features:
+            for key, value in feature['properties'].items():
+                if key not in properties:
+                    properties[key] = type(value).__name__
+
         schema = {
             'geometry': features[0]['geometry']['type'],
-            'properties': {field['name']: TYPE_LOOKUP.get(field['sqlType'], field['sqlType'])
-                           for field in layer.properties['fields']}
+            'properties': properties,
         }
 
         # Save the data
