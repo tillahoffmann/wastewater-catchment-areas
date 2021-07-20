@@ -39,6 +39,7 @@ def __main__(args=None):
     properties = []
     shapes = []
     for filename, source_crs in zip(filenames, crss):
+        LOGGER.info('loading shapes from %s...', filename)
         with fiona.open(filename) as fp:
             # Set up transformations for the data
             source_crs = pyproj.CRS(source_crs or fp.crs)

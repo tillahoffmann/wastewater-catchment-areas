@@ -11,7 +11,7 @@ docs :
 
 # Getting the data =================================================================================
 
-data : data/geoportal.statistics.gov.uk data/environment.data.gov.uk data/arcgis.com
+data : data/geoportal.statistics.gov.uk data/environment.data.gov.uk
 
 # --------------------------------------------------------------------------------------------------
 
@@ -20,16 +20,16 @@ data/geoportal.statistics.gov.uk : \
 	data/geoportal.statistics.gov.uk/LAD20_BGC.zip
 
 # Generalised LSOA boundaries clipped to the coastline
-# https://geoportal.statistics.gov.uk/datasets/lower-layer-super-output-areas-december-2011-ew-bgc-v2
+# https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-december-2011-boundaries-generalised-clipped-bgc-ew-v3/about
 data/geoportal.statistics.gov.uk/LSOA11_BGC.zip :
 	mkdir -p $(dir $@)
-	curl -L -o $@ https://opendata.arcgis.com/datasets/42f3aa4ca58742e8a55064a213fb27c9_0.zip
+	curl -L -o $@ 'https://opendata.arcgis.com/api/v3/datasets/8bbadffa6ddc493a94078c195a1e293b_0/downloads/data?format=shp&spatialRefId=27700'
 
 # Generalised Local Authority Districts clipped to the coastline
-# https://geoportal.statistics.gov.uk/datasets/local-authority-districts-may-2020-boundaries-uk-bgc-1
+# https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2020-uk-bgc/about
 data/geoportal.statistics.gov.uk/LAD20_BGC.zip :
 	mkdir -p $(dir $@)
-	curl -L -o $@ https://opendata.arcgis.com/datasets/3b374840ce1b4160b85b8146b610cd0c_0.zip?outSR=%7B%22latestWkid%22%3A27700%2C%22wkid%22%3A27700%7D
+	curl -L -o $@ 'https://opendata.arcgis.com/api/v3/datasets/db23041df155451b9a703494854c18c4_0/downloads/data?format=shp&spatialRefId=27700'
 
 # --------------------------------------------------------------------------------------------------
 
@@ -39,21 +39,13 @@ data/environment.data.gov.uk : data/environment.data.gov.uk/RiverBasins.zip
 # https://environment.data.gov.uk/DefraDataDownload/?mapService=EA/WFDRiverBasinDistrictsCycle2&Mode=spatial
 data/environment.data.gov.uk/RiverBasins.zip :
 	mkdir -p $(dir $@)
-	curl -L -o $@.tmp https://environment.data.gov.uk/UserDownloads/interactive/38e8c96bbd614d009e65532fdfda4a09100380/EA_WFDRiverBasinDistrictsCycle2_SHP_Full.zip
+	curl -L -o $@.tmp https://environment.data.gov.uk/UserDownloads/interactive/b40263fc97e24061afb8fa345bc3b14f47260/EA_WFDRiverBasinDistrictsCycle2_SHP_Full.zip
 	# Unzip and remove temporary file
 	unzip -u $@.tmp -d $@.dir
 	rm $@.tmp
 	# Rezip and remove directory
 	zip -j $@ $@.dir/data/*
 	rm -rf $@.dir
-
-# --------------------------------------------------------------------------------------------------
-
-data/arcgis.com : data/arcgis.com/GBR_PostcodeSector.geojson
-
-data/arcgis.com/GBR_PostcodeSector.geojson :
-	python download_arcgis_dataset.py --username=${NAME} --password=${PASSWORD} \
-		--layer=$(notdir ${@:.geojson=}) d7542e434a5045d19cff3bd09536720d $(dir $@)
 
 # Processing the data ==============================================================================
 
