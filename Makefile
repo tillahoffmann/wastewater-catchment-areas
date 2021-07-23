@@ -17,7 +17,8 @@ data : data/geoportal.statistics.gov.uk data/environment.data.gov.uk
 
 data/geoportal.statistics.gov.uk : \
 	data/geoportal.statistics.gov.uk/LSOA11_BGC.zip \
-	data/geoportal.statistics.gov.uk/LAD20_BGC.zip
+	data/geoportal.statistics.gov.uk/LAD20_BGC.zip \
+	data/geoportal.statistics.gov.uk/countries20_BGC.zip
 
 # Generalised LSOA boundaries clipped to the coastline
 # https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-december-2011-boundaries-generalised-clipped-bgc-ew-v3/about
@@ -30,6 +31,13 @@ data/geoportal.statistics.gov.uk/LSOA11_BGC.zip :
 data/geoportal.statistics.gov.uk/LAD20_BGC.zip :
 	mkdir -p $(dir $@)
 	curl -L -o $@ 'https://opendata.arcgis.com/api/v3/datasets/db23041df155451b9a703494854c18c4_0/downloads/data?format=shp&spatialRefId=27700'
+
+# Generalised countries clipped to the coastline
+# https://geoportal.statistics.gov.uk/datasets/ons::countries-december-2020-uk-bgc/about
+data/geoportal.statistics.gov.uk/countries20_BGC.zip :
+	mkdir -p $(dir $@)
+	curl -L -o $@ 'https://opendata.arcgis.com/api/v3/datasets/ad26732b081049d797620753db953185_0/downloads/data?format=shp&spatialRefId=27700'
+
 
 # --------------------------------------------------------------------------------------------------
 
