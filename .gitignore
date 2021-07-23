@@ -141,6 +141,8 @@ Full-text Access
 
 .DS_Store
 .vscode/
-data/
 workspace/
 playground/
+data/*
+!data/waterbase_consolidated.csv
+!data/waterbase_catchment_lookup.csv
