@@ -144,5 +144,3 @@ Full-text Access
 workspace/
 playground/
 data/*
-!data/waterbase_consolidated.csv
-!data/waterbase_catchment_lookup.csv
