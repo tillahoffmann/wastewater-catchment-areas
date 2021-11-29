@@ -144,3 +144,6 @@ Full-text Access
 workspace/
 playground/
 data/*
+
+# Don't include figures.
+/*.pdf
