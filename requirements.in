@@ -1,7 +1,11 @@
-arcgis
+chardet
 fiona
 flake8
+geopandas
+matplotlib
 numpy
+jupyter
+pandas
 pyproj
 rtree
 shapely

@@ -16,7 +16,7 @@ clear_output :
 
 # Getting the data =================================================================================
 
-data : data/geoportal.statistics.gov.uk data/environment.data.gov.uk
+data : data/geoportal.statistics.gov.uk data/eea.europa.eu
 
 # --------------------------------------------------------------------------------------------------
 
@@ -56,5 +56,13 @@ data/eea.europa.eu :
 
 # Processing of data ===============================================================================
 
-data/wastewater_catchment_areas_public/waterbase_consolidated.csv workspace/consolidate_waterbase.html : consolidate_waterbase.ipynb
+analysis : workspace/consolidate_waterbase.html workspace/consolidate_catchments.html
+
+data/wastewater_catchment_areas_public/waterbase_consolidated.csv \
+		workspace/consolidate_waterbase.html : consolidate_waterbase.ipynb
+	${NBEXECUTE} $<
+
+data/wastewater_catchment_areas_public/catchments_consolidated.shp \
+	workspace/consolidate_catchments.html \
+	overview.pdf : consolidate_catchments.ipynb
 	${NBEXECUTE} $<
