@@ -1,4 +1,6 @@
-.PHONY : data data/geoportal.statistics.gov.uk data/environment.data.gov.uk docs
+.PHONY : clear_output data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu docs
+
+NBEXECUTE = jupyter nbconvert --execute --output-dir=workspace --to=html
 
 requirements.txt : requirements.in
 	pip-compile -v
@@ -9,6 +11,9 @@ sync : requirements.txt
 docs :
 	sphinx-build . docs/_build
 
+clear_output :
+	jupyter nbconvert --clear-output *.ipynb
+
 # Getting the data =================================================================================
 
 data : data/geoportal.statistics.gov.uk data/environment.data.gov.uk
@@ -17,7 +22,6 @@ data : data/geoportal.statistics.gov.uk data/environment.data.gov.uk
 
 data/geoportal.statistics.gov.uk : \
 	data/geoportal.statistics.gov.uk/LSOA11_BGC.zip \
-	data/geoportal.statistics.gov.uk/LAD20_BGC.zip \
 	data/geoportal.statistics.gov.uk/countries20_BGC.zip
 
 # Generalised LSOA boundaries clipped to the coastline
@@ -26,38 +30,31 @@ data/geoportal.statistics.gov.uk/LSOA11_BGC.zip :
 	mkdir -p $(dir $@)
 	curl -L -o $@ 'https://opendata.arcgis.com/api/v3/datasets/8bbadffa6ddc493a94078c195a1e293b_0/downloads/data?format=shp&spatialRefId=27700'
 
-# Generalised Local Authority Districts clipped to the coastline
-# https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2020-uk-bgc/about
-data/geoportal.statistics.gov.uk/LAD20_BGC.zip :
-	mkdir -p $(dir $@)
-	curl -L -o $@ 'https://opendata.arcgis.com/api/v3/datasets/db23041df155451b9a703494854c18c4_0/downloads/data?format=shp&spatialRefId=27700'
-
 # Generalised countries clipped to the coastline
 # https://geoportal.statistics.gov.uk/datasets/ons::countries-december-2020-uk-bgc/about
 data/geoportal.statistics.gov.uk/countries20_BGC.zip :
 	mkdir -p $(dir $@)
 	curl -L -o $@ 'https://opendata.arcgis.com/api/v3/datasets/ad26732b081049d797620753db953185_0/downloads/data?format=shp&spatialRefId=27700'
 
+# --------------------------------------------------------------------------------------------------
+
+data/ons.gov.uk : data/ons.gov.uk/lsoa_syoa_all_years_t.csv
+
+# Small area population estimates from 2001 to 2017
+# https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/adhocs/009983populationestimatesforlowerlayersuperoutputareaslsoainenglandandwalessingleyearofageandsexmid2001tomid2017
+
+data/ons.gov.uk/lsoa_syoa_all_years_t.csv :
+	mkdir -p $(dir $@)
+	curl -L -o $(dir $@)/lsoasyoaallyearst.zip \
+		'https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/adhocs/009983populationestimatesforlowerlayersuperoutputareaslsoainenglandandwalessingleyearofageandsexmid2001tomid2017/lsoasyoaallyearst.zip'
+	unzip -d $(dir $@) $(dir $@)/lsoasyoaallyearst.zip
 
 # --------------------------------------------------------------------------------------------------
 
-data/environment.data.gov.uk : data/environment.data.gov.uk/RiverBasins.zip
+data/eea.europa.eu :
+	python download_waterbase.py
 
-# River catchment data
-# https://environment.data.gov.uk/DefraDataDownload/?mapService=EA/WFDRiverBasinDistrictsCycle2&Mode=spatial
-data/environment.data.gov.uk/RiverBasins.zip :
-	mkdir -p $(dir $@)
-	curl -L -o $@.tmp https://environment.data.gov.uk/UserDownloads/interactive/b40263fc97e24061afb8fa345bc3b14f47260/EA_WFDRiverBasinDistrictsCycle2_SHP_Full.zip
-	# Unzip and remove temporary file
-	unzip -u $@.tmp -d $@.dir
-	rm $@.tmp
-	# Rezip and remove directory
-	zip -j $@ $@.dir/data/*
-	rm -rf $@.dir
+# Processing of data ===============================================================================
 
-# Processing the data ==============================================================================
-
-example : workspace/RiverBasins_LAD20_BGC.json
-
-workspace/RiverBasins_LAD20_BGC.json : data/environment.data.gov.uk/RiverBasins.zip data/geoportal.statistics.gov.uk/LAD20_BGC.zip
-	python geomapping.py $(addprefix zip://,$^) $@
+data/wastewater_catchment_areas_public/waterbase_consolidated.csv workspace/consolidate_waterbase.html : consolidate_waterbase.ipynb
+	${NBEXECUTE} $<
