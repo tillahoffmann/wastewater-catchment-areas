@@ -73,3 +73,8 @@ workspace/match_waterbase_and_catchments.html ${OUTPUT_ROOT}/waterbase_catchment
 		: match_waterbase_and_catchments.ipynb ${OUTPUT_ROOT}/catchments_consolidated.shp \
 		${OUTPUT_ROOT}/waterbase_consolidated.csv
 	${NBEXECUTE} $<
+
+workspace/match_catchments_and_lsoas.html ${OUTPUT_ROOT}/lsoa_coverage.csv \
+	${OUTPUT_ROOT}/lsoa_catchment_lookup.csv \
+		: match_catchments_and_lsoas.ipynb ${OUTPUT_ROOT}/catchments_consolidated.shp
+	${NBEXECUTE} $<
