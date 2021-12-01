@@ -165,6 +165,7 @@ numpy==1.21.4
     #   -r requirements.in
     #   matplotlib
     #   pandas
+    #   scipy
 packaging==21.3
     # via
     #   bleach
@@ -240,6 +241,8 @@ qtpy==1.11.2
 requests==2.26.0
     # via sphinx
 rtree==0.9.7
+    # via -r requirements.in
+scipy==1.7.3
     # via -r requirements.in
 send2trash==1.8.0
     # via notebook

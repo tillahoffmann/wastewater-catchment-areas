@@ -70,4 +70,4 @@ The last command will execute the following notebooks in sequence and generate b
 2. :code:`conslidate_catchments.ipynb`: load all catchments, remove duplicates, annotate, and write the :code:`catchments_consolidated.*` files.
 3. :code:`match_waterbase_and_catchments.ipynb`: match UWWTD treatment works to catchments based on distances, names, and manual review. Writes the :code:`waterbase_catchment_lookup.csv` file.
 4. :code:`match_catchments_and_lsoas.ipynb`: match catchments to LSOAs to evaluate their spatial overlap. Writes the files :code:`lsoa_catchment_lookup.csv` and :code:`lsoa_coverage.csv`.
-
+5. :code:`estimate_population.ipynb`: estimate the population resident within catchments, and write the :code:`geospatial_population_estimates.csv` file.

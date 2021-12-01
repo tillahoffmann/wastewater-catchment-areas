@@ -17,7 +17,7 @@ clear_output :
 
 # Getting the data =================================================================================
 
-data : data/geoportal.statistics.gov.uk data/eea.europa.eu
+data : data/geoportal.statistics.gov.uk data/eea.europa.eu data/ons.gov.uk
 
 # --------------------------------------------------------------------------------------------------
 
@@ -59,7 +59,8 @@ data/eea.europa.eu :
 
 analysis : workspace/consolidate_waterbase.html \
 	workspace/consolidate_catchments.html \
-	workspace/match_waterbase_and_catchments.html
+	workspace/match_waterbase_and_catchments.html \
+	workspace/estimate_population.html
 
 workspace/consolidate_waterbase.html ${OUTPUT_ROOT}/waterbase_consolidated.csv \
 		 : consolidate_waterbase.ipynb
@@ -77,4 +78,9 @@ workspace/match_waterbase_and_catchments.html ${OUTPUT_ROOT}/waterbase_catchment
 workspace/match_catchments_and_lsoas.html ${OUTPUT_ROOT}/lsoa_coverage.csv \
 	${OUTPUT_ROOT}/lsoa_catchment_lookup.csv \
 		: match_catchments_and_lsoas.ipynb ${OUTPUT_ROOT}/catchments_consolidated.shp
+	${NBEXECUTE} $<
+
+workspace/workspace/estimate_population.html ${OUTPUT_ROOT}/population_estimates.csv \
+	population_estimates.pdf estimation_method.pdf \
+		: estimate_population.ipynb
 	${NBEXECUTE} $<

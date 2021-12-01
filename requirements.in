@@ -8,6 +8,7 @@ jupyter
 pandas
 pyproj
 rtree
+scipy
 shapely
 sphinx
 tqdm
