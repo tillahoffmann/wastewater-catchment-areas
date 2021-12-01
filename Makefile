@@ -1,6 +1,7 @@
 .PHONY : clear_output data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu docs
 
 NBEXECUTE = jupyter nbconvert --execute --output-dir=workspace --to=html
+OUTPUT_ROOT = data/wastewater_catchment_areas_public
 
 requirements.txt : requirements.in
 	pip-compile -v
@@ -56,13 +57,19 @@ data/eea.europa.eu :
 
 # Processing of data ===============================================================================
 
-analysis : workspace/consolidate_waterbase.html workspace/consolidate_catchments.html
+analysis : workspace/consolidate_waterbase.html \
+	workspace/consolidate_catchments.html \
+	workspace/match_waterbase_and_catchments.html
 
-data/wastewater_catchment_areas_public/waterbase_consolidated.csv \
-		workspace/consolidate_waterbase.html : consolidate_waterbase.ipynb
+workspace/consolidate_waterbase.html ${OUTPUT_ROOT}/waterbase_consolidated.csv \
+		 : consolidate_waterbase.ipynb
 	${NBEXECUTE} $<
 
-data/wastewater_catchment_areas_public/catchments_consolidated.shp \
-	workspace/consolidate_catchments.html \
-	overview.pdf : consolidate_catchments.ipynb
+workspace/consolidate_catchments.html ${OUTPUT_ROOT}/catchments_consolidated.shp overview.pdf \
+		: consolidate_catchments.ipynb
+	${NBEXECUTE} $<
+
+workspace/match_waterbase_and_catchments.html ${OUTPUT_ROOT}/waterbase_catchment_lookup.csv \
+		: match_waterbase_and_catchments.ipynb ${OUTPUT_ROOT}/catchments_consolidated.shp \
+		${OUTPUT_ROOT}/waterbase_consolidated.csv
 	${NBEXECUTE} $<
