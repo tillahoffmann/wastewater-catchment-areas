@@ -62,25 +62,34 @@ analysis : workspace/consolidate_waterbase.html \
 	workspace/match_waterbase_and_catchments.html \
 	workspace/estimate_population.html
 
+${OUTPUT_ROOT} :
+	mkdir -p $@
+
+workspace :
+	mkdir -p $@
+
 workspace/consolidate_waterbase.html ${OUTPUT_ROOT}/waterbase_consolidated.csv \
-		 : consolidate_waterbase.ipynb
+		 : consolidate_waterbase.ipynb workspace ${OUTPUT_ROOT} data/eea.europa.eu
 	${NBEXECUTE} $<
 
 workspace/consolidate_catchments.html ${OUTPUT_ROOT}/catchments_consolidated.shp overview.pdf \
-		: consolidate_catchments.ipynb
+		: consolidate_catchments.ipynb workspace ${OUTPUT_ROOT} data/eir
 	${NBEXECUTE} $<
 
 workspace/match_waterbase_and_catchments.html ${OUTPUT_ROOT}/waterbase_catchment_lookup.csv \
-		: match_waterbase_and_catchments.ipynb ${OUTPUT_ROOT}/catchments_consolidated.shp \
-		${OUTPUT_ROOT}/waterbase_consolidated.csv
+		: match_waterbase_and_catchments.ipynb workspace ${OUTPUT_ROOT} \
+		${OUTPUT_ROOT}/catchments_consolidated.shp ${OUTPUT_ROOT}/waterbase_consolidated.csv
 	${NBEXECUTE} $<
 
 workspace/match_catchments_and_lsoas.html ${OUTPUT_ROOT}/lsoa_coverage.csv \
 	${OUTPUT_ROOT}/lsoa_catchment_lookup.csv \
-		: match_catchments_and_lsoas.ipynb ${OUTPUT_ROOT}/catchments_consolidated.shp
+		: match_catchments_and_lsoas.ipynb workspace ${OUTPUT_ROOT} \
+		${OUTPUT_ROOT}/catchments_consolidated.shp data/geoportal.statistics.gov.uk
 	${NBEXECUTE} $<
 
-workspace/workspace/estimate_population.html ${OUTPUT_ROOT}/population_estimates.csv \
+workspace/estimate_population.html ${OUTPUT_ROOT}/population_estimates.csv \
 	population_estimates.pdf estimation_method.pdf \
-		: estimate_population.ipynb
+		: estimate_population.ipynb data/ons.gov.uk workspace ${OUTPUT_ROOT} \
+		${OUTPUT_ROOT}/lsoa_catchment_lookup.csv ${OUTPUT_ROOT}/lsoa_coverage.csv \
+		${OUTPUT_ROOT}/waterbase_catchment_lookup.csv
 	${NBEXECUTE} $<
