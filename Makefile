@@ -121,7 +121,7 @@ workspace/consolidate_waterbase.html ${OUTPUT_ROOT}/waterbase_consolidated.csv \
 	${NBEXECUTE} $<
 
 workspace/consolidate_catchments.html ${OUTPUT_ROOT}/catchments_consolidated.shp overview.pdf \
-		: consolidate_catchments.ipynb workspace ${OUTPUT_ROOT} data/eir
+		: consolidate_catchments.ipynb workspace ${OUTPUT_ROOT} data/raw_catchments
 	${NBEXECUTE} $<
 
 workspace/match_waterbase_and_catchments.html ${OUTPUT_ROOT}/waterbase_catchment_lookup.csv \
