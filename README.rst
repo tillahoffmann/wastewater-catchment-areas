@@ -1,12 +1,12 @@
-🧭 geomapping
-=============
+Wastewater Catchment Areas in Great Britain
+===========================================
 
-This repository provides code to consolidate wastewater catchment areas and evaluate their spatial overlap with statistical reporting units, such as Lower Layer Super Output Areas (LSOAs). If you are interested in the data products only, please see the following section. Please see the :ref:`Reproducing the Analysis` section for further details.
+This repository provides code to consolidate wastewater catchment areas in Great Britain and evaluate their spatial overlap with statistical reporting units, such as Lower Layer Super Output Areas (LSOAs). Please see the accompanying publication **(include link when available)** for a detailed description of the analysis. If you have questions about the analysis, code, or accessing the data, please contact :code:`till dot hoffmann at oxon dot org`.
 
-Data
-----
+💾 Data
+-------
 
-Wastewater catchment area data were obtained from sewerage service providers under `Environmental Information Regulations 2004 <https://www.legislation.gov.uk/uksi/2004/3391/contents/made>`__. These geospatial data were consolidated and matched to wastewater treatment works data collected under the `Urban Wastewater Treatment Directive of the European Union <https://uwwtd.eu/United-Kingdom/>`__. The data can be accessed `here <https://drive.google.com/drive/folders/1WYhmVkng8YFDk2NPReFl5sqFY96sJ70X?usp=sharing>`__ and comprise:
+We obtained wastewater catchment area data from sewerage service providers under `Environmental Information Regulations 2004 <https://en.wikipedia.org/wiki/Environmental_Information_Regulations_2004>`__. We consolidated these geospatial data and matched catchments to wastewater treatment works data collected under the `Urban Wastewater Treatment Directive of the European Union <https://uwwtd.eu/United-Kingdom/>`__. After analysis, the data comprise
 
 - :code:`catchments_consolidated.*`: geospatial data as a shapefile in the `British National Grid projection <https://epsg.io/7405>`__, including auxiliary files. Each feature has the following attributes:
 
@@ -40,31 +40,65 @@ Wastewater catchment area data were obtained from sewerage service providers und
   - :code:`LSOA11CD`: LSOA identifier as used in the 2011 census.
   - :code:`intersection_area`: area of the intersection between the catchment and LSOA in British National Grid projection (approximately square metres).
 
-.. _Reproducing the Analysis:
+Environmental Information Requests
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Reproducing the Analysis
-------------------------
+Details of the submitted Environmental Information Requests can be found here:
 
-1. Request the underlying data by emailing till dot hoffmann at oxon dot org, and extract the archive to :code:`data/eir`.
-2. Set up a clean python environment (this code has only been tested using python 3.9 on an Apple Silicone Macbook Pro), ideally using a virtual environment. Then install the required dependencies by running.
+- 🟡 `Anglian Water <https://www.whatdotheyknow.com/r/615f2df6-b1b3-42db-a236-8b311789a468>`__: data provided but not publicly accessible.
+- 🔴 `Northern Ireland Water <https://www.whatdotheyknow.com/r/2b144b5d-abe6-4ad9-a61b-4e39f1e96e9f>`__: request refused.
+- 🟢 `Northumbrian Water <https://www.whatdotheyknow.com/r/aad55c04-bbc4-47a9-bec8-ea7e2a97f6d3>`__: data provided and publicly accessible.
+- 🟢 `Scottish Water <https://www.whatdotheyknow.com/r/0998addc-63f7-4a78-ac75-17fcf9b54b7d>`__: data provided and publicly accessible.
+- 🟡 `Severn Trent Water <https://www.whatdotheyknow.com/r/505e5178-c611-44f7-b6db-7f1e3c599e0e>`__: data provided but not publicly accessible.
+- 🟢 `Southern Water <https://www.whatdotheyknow.com/r/4cde4e22-1df0-42c8-b1a2-02e2cbd45b1b>`__: data provided and publicly accessible.
+- 🔴 `South West Water <https://www.whatdotheyknow.com/r/5bfae578-d74d-4962-850b-3c5851c3ab5a>`__: request refused.
+- 🟢 `Thames Water <https://www.whatdotheyknow.com/r/e5915cbb-dc3b-4797-bf75-fe7cd8eb75c0>`__: data provided and publicly accessible.
+- 🟢 `United Utilities <https://www.whatdotheyknow.com/r/578035f9-a422-4c1b-a803-c257bf4f3414>`__: data provided and publicly accessible.
+- 🟢 `Welsh Water <https://www.whatdotheyknow.com/r/f482d33f-e753-45b2-9518-45ddf92fa718>`__: data provided and publicly accessible.
+- 🟢 `Wessex Water <https://www.whatdotheyknow.com/r/bda33cfd-e23d-49e6-b651-4ff8997c83c3>`__: data provided and publicly accessible.
+- 🟢 `Yorkshire Water <https://www.whatdotheyknow.com/r/639740ed-b0a3-4609-b4b6-a30a052fe037>`__: data provided and publicly accessible.
+
+You can use the following template to request the raw data directly from water companies.
+
+  Dear EIR Team,
+
+  Could you please provide the geospatial extent of wastewater catchment areas served by wastewater treatment plants owned or operated by your company as an attachment in response to this request? Could you please provide these data at the highest spatial resolution available in a machine-readable vector format (see below for a non-exhaustive list of suitable formats)? Catchment areas served by different treatment plants should be distinguishable.
+
+  For example, geospatial data could be provided as shapefile (https://en.wikipedia.org/wiki/Shapefile), GeoJSON (https://en.wikipedia.org/wiki/GeoJSON), or GeoPackage (https://en.wikipedia.org/wiki/GeoPackage) formats. Other commonly used geospatial file formats may also be suitable, but rasterised file formats are not suitable.
+
+  This request was previously submitted directly to the EIR team, and I trust I will receive the same response via the whatdotheyknow.com platform. Thank you for your time and I look forward to hearing from you.
+
+  All the best,
+  [your name here]
+
+🔎 Reproducing the Analysis
+---------------------------
+
+1. Set up a clean python environment (this code has only been tested using python 3.9 on an Apple Silicone Macbook Pro), ideally using a virtual environment. Then install the required dependencies by running
 
    .. code:: bash
 
       pip install -r requirements.txt
 
-3. Download auxiliary data, e.g. LSOA boundaries and UWWTD data, by running
+2. Download the data (including data on Lower Layer Super Output Areas (LSOAs) and population in LSOAs from the ONS, Urban Wastewater Treatment Directive Data from the European Environment Agency, and wastewater catchment area data from whatdotheyknow.com) by running the following command. Catchment area data for Anglian Water and Severn Trent Water are available by submitting an Environmental Information Request, but they are not currently available for download from whatdotheyknow.com. Please use the Environmental Information Request template above or get in touch with the authors at :code:`till dot hoffmann at oxon dot org`.
 
    .. code:: bash
 
       make data
 
-4. Run the analysis by executing
+4. Validate all the data are in place and that you have the correct input data by running
+
+  .. code:: bash
+
+      make data/validation
+
+5. Run the analysis by executing
 
    .. code:: bash
 
       make analysis
 
-The last command will execute the following notebooks in sequence and generate both the data products listed above as well as the figures in the accompanying manuscript.
+The last command will execute the following notebooks in sequence and generate both the data products listed above as well as the figures in the accompanying manuscript. The analysis will take between 15 and 30 minutes depending on your computer.
 
 1. :code:`consolidate_waterbase.ipynb`: load the UWWTD data, extract all treatment work information, and write the :code:`waterbase_consolidated.csv` file.
 2. :code:`conslidate_catchments.ipynb`: load all catchments, remove duplicates, annotate, and write the :code:`catchments_consolidated.*` files.
