@@ -1,4 +1,5 @@
-.PHONY : clear_output data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu docs
+.PHONY : clear_output data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu docs \
+	data/raw_catchments data/validation data.shasum
 
 NBEXECUTE = jupyter nbconvert --execute --output-dir=workspace --to=html
 OUTPUT_ROOT = data/wastewater_catchment_areas_public
@@ -17,7 +18,7 @@ clear_output :
 
 # Getting the data =================================================================================
 
-data : data/geoportal.statistics.gov.uk data/eea.europa.eu data/ons.gov.uk
+data : data/geoportal.statistics.gov.uk data/eea.europa.eu data/ons.gov.uk data/raw_catchments
 
 # --------------------------------------------------------------------------------------------------
 
@@ -54,6 +55,53 @@ data/ons.gov.uk/lsoa_syoa_all_years_t.csv :
 
 data/eea.europa.eu :
 	python download_waterbase.py
+
+# --------------------------------------------------------------------------------------------------
+
+data/raw_catchments/anglian_water.zip :
+	$(info Anglian Water has not provided the data as an attachment to the Environmental Information \
+		request; see https://www.whatdotheyknow.com/r/615f2df6-b1b3-42db-a236-8b311789a468 for \
+		details. You can obtain the dataset by submitting your own request on whatdotheyknow.com, \
+		emailing eir@anglianwater.co.uk using the Environmental Information Request \
+		template in the README, or contacting the authors at till dot hoffmann at oxon dot org.)
+
+data/raw_catchments/severn_trent_water.zip :
+	$(info Severn Trent Water has not provided the data as an attachment to the Environmental \
+		Information request; see https://www.whatdotheyknow.com/r/505e5178-c611-44f7-b6db-7f1e3c599e0e \
+		for details. You can obtain the dataset by submitting your own request on whatdotheyknow.com, \
+		emailing customerEIR@severntrent.co.uk using the Environmental Information Request \
+		template in the README, or contacting the authors at till dot hoffmann at oxon dot org.)
+
+COMPANIES = thames_water united_utilities welsh_water southern_water northumbrian_water \
+	yorkshire_water scottish_water wessex_water
+DOWNLOAD_URL_thames_water = https://www.whatdotheyknow.com/r/e5915cbb-dc3b-4797-bf75-fe7cd8eb75c0/response/1949301/attach/2/SDAC.zip
+DOWNLOAD_URL_united_utilities = https://www.whatdotheyknow.com/r/578035f9-a422-4c1b-a803-c257bf4f3414/response/1948454/attach/3/UUDrainageAreas040122.zip
+DOWNLOAD_URL_welsh_water = https://www.whatdotheyknow.com/r/f482d33f-e753-45b2-9518-45ddf92fa718/response/1948207/attach/3/DCWW%20Catchments.zip
+DOWNLOAD_URL_southern_water = https://www.whatdotheyknow.com/r/4cde4e22-1df0-42c8-b1a2-02e2cbd45b1b/response/1938054/attach/3/swsdrain%20region.zip
+DOWNLOAD_URL_northumbrian_water = https://www.whatdotheyknow.com/r/aad55c04-bbc4-47a9-bec8-ea7e2a97f6d3/response/1934324/attach/3/STW%20Catchments.zip
+DOWNLOAD_URL_yorkshire_water = https://www.whatdotheyknow.com/r/639740ed-b0a3-4609-b4b6-a30a052fe037/response/1945306/attach/3/EIR%20Wastewater%20Catchments.zip
+DOWNLOAD_URL_scottish_water = https://www.whatdotheyknow.com/r/0998addc-63f7-4a78-ac75-17fcf9b54b7d/response/1938176/attach/4/DOAs%20and%20WWTWs.zip
+DOWNLOAD_URL_wessex_water = https://www.whatdotheyknow.com/r/bda33cfd-e23d-49e6-b651-4ff8997c83c3/response/1947874/attach/2/WxW%20WRC%20Catchments%20Dec2021.zip
+DOWNLOAD_TARGETS = $(addprefix data/raw_catchments/,${COMPANIES:=.zip})
+
+data/raw_catchments : data/raw_catchments/anglian_water.zip data/raw_catchments/severn_trent_water.zip \
+	${DOWNLOAD_TARGETS}
+
+${DOWNLOAD_TARGETS} : data/raw_catchments/%.zip :
+	mkdir -p $(dir $@)
+	curl -L -o $@ ${DOWNLOAD_URL_$*}
+
+data.shasum : ${DOWNLOAD_TARGETS} \
+		data/ons.gov.uk/lsoa_syoa_all_years_t.csv \
+		data/geoportal.statistics.gov.uk/countries20_BGC.zip \
+		data/geoportal.statistics.gov.uk/LSOA11_BGC.zip \
+		data/eea.europa.eu/waterbase_v?_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v6_csv/dbo.VL_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v?_csv/UWWTPS.csv
+	shasum $^ > $@
+
+data/validation :
+	shasum -c data.shasum
 
 # Processing of data ===============================================================================
 
