@@ -1,4 +1,5 @@
-.PHONY : clear_output data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu docs data/raw_catchments
+.PHONY : clear_output data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu docs \
+	data/raw_catchments data/validation data.shasum
 
 NBEXECUTE = jupyter nbconvert --execute --output-dir=workspace --to=html
 OUTPUT_ROOT = data/wastewater_catchment_areas_public
@@ -89,6 +90,18 @@ data/raw_catchments : data/raw_catchments/anglian_water.zip data/raw_catchments/
 ${DOWNLOAD_TARGETS} : data/raw_catchments/%.zip :
 	mkdir -p $(dir $@)
 	curl -L -o $@ ${DOWNLOAD_URL_$*}
+
+data.shasum : ${DOWNLOAD_TARGETS} \
+		data/ons.gov.uk/lsoa_syoa_all_years_t.csv \
+		data/geoportal.statistics.gov.uk/countries20_BGC.zip \
+		data/geoportal.statistics.gov.uk/LSOA11_BGC.zip \
+		data/eea.europa.eu/waterbase_v?_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v6_csv/dbo.VL_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v?_csv/UWWTPS.csv
+	shasum $^ > $@
+
+data/validation :
+	shasum -c data.shasum
 
 # Processing of data ===============================================================================
 
