@@ -74,7 +74,7 @@ You can use the following template to request the raw data directly from water c
 🔎 Reproducing the Analysis
 ---------------------------
 
-1. Set up a clean python environment (this code has only been tested using python 3.9 on an Apple Silicone Macbook Pro), ideally using a virtual environment. Then install the required dependencies by running
+1. Set up a clean python environment (this code has only been tested using python 3.9 on an Apple Silicon Macbook Pro), ideally using a virtual environment. Then install the required dependencies by running
 
    .. code:: bash
 
@@ -105,3 +105,8 @@ The last command will execute the following notebooks in sequence and generate b
 3. :code:`match_waterbase_and_catchments.ipynb`: match UWWTD treatment works to catchments based on distances, names, and manual review. Writes the :code:`waterbase_catchment_lookup.csv` file.
 4. :code:`match_catchments_and_lsoas.ipynb`: match catchments to LSOAs to evaluate their spatial overlap. Writes the files :code:`lsoa_catchment_lookup.csv` and :code:`lsoa_coverage.csv`.
 5. :code:`estimate_population.ipynb`: estimate the population resident within catchments, and write the :code:`geospatial_population_estimates.csv` file.
+
+Acknowledgements
+----------------
+
+This research is part of the Data and Connectivity National Core Study, led by Health Data Research UK in partnership with the Office for National Statistics and funded by UK Research and Innovation (grant ref MC_PC_20029).
