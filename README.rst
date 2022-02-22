@@ -88,7 +88,7 @@ You can use the following template to request the raw data directly from water c
 
 4. Validate all the data are in place and that you have the correct input data by running
 
-  .. code:: bash
+   .. code:: bash
 
       make data/validation
 
