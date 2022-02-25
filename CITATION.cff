@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Hoffmann"
+  given-names: "Till"
+  orcid: "https://orcid.org/0000-0003-4403-0722"
+- family-names: "Bunney"
+  given-names: "Sarah"
+  orcid: "https://orcid.org/0000-0002-0953-4776"
+- family-names: "Kasprzyk-Hordern"
+  given-names: "Barbara"
+  orcid: "https://orcid.org/0000-0002-6809-2875"
+- family-names: "Singer"
+  given-names: "Andrew"
+  orcid: "https://orcid.org/0000-0003-4705-6063"
+title: "Wastewater catchment areas in Great Britain"
+url: "https://github.com/tillahoffmann/wastewater-catchment-areas"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Hoffmann"
+    given-names: "Till"
+    orcid: "https://orcid.org/0000-0003-4403-0722"
+  - family-names: "Bunney"
+    given-names: "Sarah"
+    orcid: "https://orcid.org/0000-0002-0953-4776"
+  - family-names: "Kasprzyk-Hordern"
+    given-names: "Barbara"
+    orcid: "https://orcid.org/0000-0002-6809-2875"
+  - family-names: "Singer"
+    given-names: "Andrew"
+    orcid: "https://orcid.org/0000-0003-4705-6063"
+  doi: "10.1002/essoar.10510612.2"
+  journal: "ESSOAr"
+  title: "Wastewater catchment areas in Great Britain"
+  year: 2022

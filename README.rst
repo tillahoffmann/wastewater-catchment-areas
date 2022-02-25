@@ -1,7 +1,7 @@
 Wastewater Catchment Areas in Great Britain
 ===========================================
 
-This repository provides code to consolidate wastewater catchment areas in Great Britain and evaluate their spatial overlap with statistical reporting units, such as Lower Layer Super Output Areas (LSOAs). Please see the accompanying publication **(include link when available)** for a detailed description of the analysis. If you have questions about the analysis, code, or accessing the data, please contact :code:`till dot hoffmann at oxon dot org`.
+This repository provides code to consolidate wastewater catchment areas in Great Britain and evaluate their spatial overlap with statistical reporting units, such as Lower Layer Super Output Areas (LSOAs). Please see the `accompanying publication <https://doi.org/10.1002/essoar.10510612.2>`__ for a detailed description of the analysis. If you have questions about the analysis, code, or accessing the data, please contact :code:`till dot hoffmann at oxon dot org`.
 
 💾 Data
 -------
