@@ -45,7 +45,7 @@ Environmental Information Requests
 
 Details of the submitted Environmental Information Requests can be found here:
 
-- 🟡 `Anglian Water <https://www.whatdotheyknow.com/r/615f2df6-b1b3-42db-a236-8b311789a468>`__: data provided but not publicly accessible.
+- 🟢 `Anglian Water <https://www.whatdotheyknow.com/r/615f2df6-b1b3-42db-a236-8b311789a468>`__: data provided and publicly accessible.
 - 🔴 `Northern Ireland Water <https://www.whatdotheyknow.com/r/2b144b5d-abe6-4ad9-a61b-4e39f1e96e9f>`__: request refused.
 - 🟢 `Northumbrian Water <https://www.whatdotheyknow.com/r/aad55c04-bbc4-47a9-bec8-ea7e2a97f6d3>`__: data provided and publicly accessible.
 - 🟢 `Scottish Water <https://www.whatdotheyknow.com/r/0998addc-63f7-4a78-ac75-17fcf9b54b7d>`__: data provided and publicly accessible.
