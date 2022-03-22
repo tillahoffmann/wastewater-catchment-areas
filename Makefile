@@ -58,13 +58,6 @@ data/eea.europa.eu :
 
 # --------------------------------------------------------------------------------------------------
 
-data/raw_catchments/anglian_water.zip :
-	$(info Anglian Water has not provided the data as an attachment to the Environmental Information \
-		request; see https://www.whatdotheyknow.com/r/615f2df6-b1b3-42db-a236-8b311789a468 for \
-		details. You can obtain the dataset by submitting your own request on whatdotheyknow.com, \
-		emailing eir@anglianwater.co.uk using the Environmental Information Request \
-		template in the README, or contacting the authors at till dot hoffmann at oxon dot org.)
-
 data/raw_catchments/severn_trent_water.zip :
 	$(info Severn Trent Water has not provided the data as an attachment to the Environmental \
 		Information request; see https://www.whatdotheyknow.com/r/505e5178-c611-44f7-b6db-7f1e3c599e0e \
@@ -72,8 +65,9 @@ data/raw_catchments/severn_trent_water.zip :
 		emailing customerEIR@severntrent.co.uk using the Environmental Information Request \
 		template in the README, or contacting the authors at till dot hoffmann at oxon dot org.)
 
-COMPANIES = thames_water united_utilities welsh_water southern_water northumbrian_water \
+COMPANIES = anglian_water thames_water united_utilities welsh_water southern_water northumbrian_water \
 	yorkshire_water scottish_water wessex_water
+DOWNLOAD_URL_anglian_water = https://www.whatdotheyknow.com/request/815216/response/2001959/attach/3/WWCATCHPOLY%2023%2004%202021.zip
 DOWNLOAD_URL_thames_water = https://www.whatdotheyknow.com/r/e5915cbb-dc3b-4797-bf75-fe7cd8eb75c0/response/1949301/attach/2/SDAC.zip
 DOWNLOAD_URL_united_utilities = https://www.whatdotheyknow.com/r/578035f9-a422-4c1b-a803-c257bf4f3414/response/1948454/attach/3/UUDrainageAreas040122.zip
 DOWNLOAD_URL_welsh_water = https://www.whatdotheyknow.com/r/f482d33f-e753-45b2-9518-45ddf92fa718/response/1948207/attach/3/DCWW%20Catchments.zip
@@ -84,8 +78,7 @@ DOWNLOAD_URL_scottish_water = https://www.whatdotheyknow.com/r/0998addc-63f7-4a7
 DOWNLOAD_URL_wessex_water = https://www.whatdotheyknow.com/r/bda33cfd-e23d-49e6-b651-4ff8997c83c3/response/1947874/attach/2/WxW%20WRC%20Catchments%20Dec2021.zip
 DOWNLOAD_TARGETS = $(addprefix data/raw_catchments/,${COMPANIES:=.zip})
 
-data/raw_catchments : data/raw_catchments/anglian_water.zip data/raw_catchments/severn_trent_water.zip \
-	${DOWNLOAD_TARGETS}
+data/raw_catchments : data/raw_catchments/severn_trent_water.zip ${DOWNLOAD_TARGETS}
 
 ${DOWNLOAD_TARGETS} : data/raw_catchments/%.zip :
 	mkdir -p $(dir $@)
