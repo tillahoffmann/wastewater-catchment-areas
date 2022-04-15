@@ -143,7 +143,7 @@ Full-text Access
 .vscode/
 workspace/
 playground/
-data/*
+data
 
 # Don't include figures.
 /*.pdf
