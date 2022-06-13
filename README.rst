@@ -3,6 +3,11 @@ Wastewater Catchment Areas in Great Britain
 
 This repository provides code to consolidate wastewater catchment areas in Great Britain and evaluate their spatial overlap with statistical reporting units, such as Lower Layer Super Output Areas (LSOAs). Please see the `accompanying publication <https://doi.org/10.1002/essoar.10510612.2>`__ for a detailed description of the analysis. If you have questions about the analysis, code, or accessing the data, please contact :code:`till dot hoffmann at oxon dot org`.
 
+🏁 Just give me the dataset
+--------------------------
+
+If you are interested in the consolidated dataset of wastewater catchment areas rather than reproducing the analysis, you can download it `here <https://gist.github.com/fc12349c02950e43a9edefe5907eb62c/raw/5ed839ae794c660cce623018c43ca4a96878fad4/catchments_consolidated.zip>`__ (`Shapefile <https://en.wikipedia.org/wiki/Shapefile>`__ format).
+
 💾 Data
 -------
 
@@ -49,7 +54,7 @@ Details of the submitted Environmental Information Requests can be found here:
 - 🔴 `Northern Ireland Water <https://www.whatdotheyknow.com/r/2b144b5d-abe6-4ad9-a61b-4e39f1e96e9f>`__: request refused.
 - 🟢 `Northumbrian Water <https://www.whatdotheyknow.com/r/aad55c04-bbc4-47a9-bec8-ea7e2a97f6d3>`__: data provided and publicly accessible.
 - 🟢 `Scottish Water <https://www.whatdotheyknow.com/r/0998addc-63f7-4a78-ac75-17fcf9b54b7d>`__: data provided and publicly accessible.
-- 🟡 `Severn Trent Water <https://www.whatdotheyknow.com/r/505e5178-c611-44f7-b6db-7f1e3c599e0e>`__: data provided but not publicly accessible.
+- 🟢 `Severn Trent Water <https://www.whatdotheyknow.com/request/wastewater_catchment_areas>`__: data provided but not publicly accessible.
 - 🟢 `Southern Water <https://www.whatdotheyknow.com/r/4cde4e22-1df0-42c8-b1a2-02e2cbd45b1b>`__: data provided and publicly accessible.
 - 🔴 `South West Water <https://www.whatdotheyknow.com/r/5bfae578-d74d-4962-850b-3c5851c3ab5a>`__: request refused.
 - 🟢 `Thames Water <https://www.whatdotheyknow.com/r/e5915cbb-dc3b-4797-bf75-fe7cd8eb75c0>`__: data provided and publicly accessible.

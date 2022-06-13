@@ -58,15 +58,8 @@ data/eea.europa.eu :
 
 # --------------------------------------------------------------------------------------------------
 
-data/raw_catchments/severn_trent_water.zip :
-	$(info Severn Trent Water has not provided the data as an attachment to the Environmental \
-		Information request; see https://www.whatdotheyknow.com/r/505e5178-c611-44f7-b6db-7f1e3c599e0e \
-		for details. You can obtain the dataset by submitting your own request on whatdotheyknow.com, \
-		emailing customerEIR@severntrent.co.uk using the Environmental Information Request \
-		template in the README, or contacting the authors at till dot hoffmann at oxon dot org.)
-
 COMPANIES = anglian_water thames_water united_utilities welsh_water southern_water northumbrian_water \
-	yorkshire_water scottish_water wessex_water
+	yorkshire_water scottish_water severn_trent_water wessex_water
 DOWNLOAD_URL_anglian_water = https://www.whatdotheyknow.com/request/815216/response/2001959/attach/3/WWCATCHPOLY%2023%2004%202021.zip
 DOWNLOAD_URL_thames_water = https://www.whatdotheyknow.com/r/e5915cbb-dc3b-4797-bf75-fe7cd8eb75c0/response/1949301/attach/2/SDAC.zip
 DOWNLOAD_URL_united_utilities = https://www.whatdotheyknow.com/r/578035f9-a422-4c1b-a803-c257bf4f3414/response/1948454/attach/3/UUDrainageAreas040122.zip
@@ -75,10 +68,11 @@ DOWNLOAD_URL_southern_water = https://www.whatdotheyknow.com/r/4cde4e22-1df0-42c
 DOWNLOAD_URL_northumbrian_water = https://www.whatdotheyknow.com/r/aad55c04-bbc4-47a9-bec8-ea7e2a97f6d3/response/1934324/attach/3/STW%20Catchments.zip
 DOWNLOAD_URL_yorkshire_water = https://www.whatdotheyknow.com/r/639740ed-b0a3-4609-b4b6-a30a052fe037/response/1945306/attach/3/EIR%20Wastewater%20Catchments.zip
 DOWNLOAD_URL_scottish_water = https://www.whatdotheyknow.com/r/0998addc-63f7-4a78-ac75-17fcf9b54b7d/response/1938176/attach/4/DOAs%20and%20WWTWs.zip
+DOWNLOAD_URL_severn_trent_water = https://web.archive.org/web/20220613151243/https://www.stwater.co.uk/content/dam/stw/my-account/boundary-map-2022.zip
 DOWNLOAD_URL_wessex_water = https://www.whatdotheyknow.com/r/bda33cfd-e23d-49e6-b651-4ff8997c83c3/response/1947874/attach/2/WxW%20WRC%20Catchments%20Dec2021.zip
 DOWNLOAD_TARGETS = $(addprefix data/raw_catchments/,${COMPANIES:=.zip})
 
-data/raw_catchments : data/raw_catchments/severn_trent_water.zip ${DOWNLOAD_TARGETS}
+data/raw_catchments : ${DOWNLOAD_TARGETS}
 
 ${DOWNLOAD_TARGETS} : data/raw_catchments/%.zip :
 	mkdir -p $(dir $@)
@@ -101,7 +95,8 @@ data/validation :
 analysis : workspace/consolidate_waterbase.html \
 	workspace/consolidate_catchments.html \
 	workspace/match_waterbase_and_catchments.html \
-	workspace/estimate_population.html
+	workspace/estimate_population.html \
+	workspace/catchments_consolidated.zip
 
 ${OUTPUT_ROOT} :
 	mkdir -p $@
@@ -134,3 +129,6 @@ workspace/estimate_population.html ${OUTPUT_ROOT}/population_estimates.csv \
 		${OUTPUT_ROOT}/lsoa_catchment_lookup.csv ${OUTPUT_ROOT}/lsoa_coverage.csv \
 		${OUTPUT_ROOT}/waterbase_catchment_lookup.csv
 	${NBEXECUTE} $<
+
+${OUTPUT_ROOT}/catchments_consolidated.zip : ${OUTPUT_ROOT}/catchments_consolidated.shp
+	zip $@ ${@:.zip=}*
