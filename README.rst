@@ -54,7 +54,7 @@ Details of the submitted Environmental Information Requests can be found here:
 - 🔴 `Northern Ireland Water <https://www.whatdotheyknow.com/r/2b144b5d-abe6-4ad9-a61b-4e39f1e96e9f>`__: request refused.
 - 🟢 `Northumbrian Water <https://www.whatdotheyknow.com/r/aad55c04-bbc4-47a9-bec8-ea7e2a97f6d3>`__: data provided and publicly accessible.
 - 🟢 `Scottish Water <https://www.whatdotheyknow.com/r/0998addc-63f7-4a78-ac75-17fcf9b54b7d>`__: data provided and publicly accessible.
-- 🟢 `Severn Trent Water <https://www.whatdotheyknow.com/request/wastewater_catchment_areas>`__: data provided but not publicly accessible.
+- 🟢 `Severn Trent Water <https://www.whatdotheyknow.com/request/wastewater_catchment_areas>`__: data provided and publicly accessible.
 - 🟢 `Southern Water <https://www.whatdotheyknow.com/r/4cde4e22-1df0-42c8-b1a2-02e2cbd45b1b>`__: data provided and publicly accessible.
 - 🔴 `South West Water <https://www.whatdotheyknow.com/r/5bfae578-d74d-4962-850b-3c5851c3ab5a>`__: request refused.
 - 🟢 `Thames Water <https://www.whatdotheyknow.com/r/e5915cbb-dc3b-4797-bf75-fe7cd8eb75c0>`__: data provided and publicly accessible.
