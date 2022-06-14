@@ -6,7 +6,7 @@ This repository provides code to consolidate wastewater catchment areas in Great
 🏁 Just give me the dataset
 --------------------------
 
-If you are interested in the consolidated dataset of wastewater catchment areas rather than reproducing the analysis, you can download it `here <https://gist.github.com/fc12349c02950e43a9edefe5907eb62c/raw/5ed839ae794c660cce623018c43ca4a96878fad4/catchments_consolidated.zip>`__ (`Shapefile <https://en.wikipedia.org/wiki/Shapefile>`__ format).
+If you are interested in the consolidated dataset of wastewater catchment areas rather than reproducing the analysis, you can download it `here <https://gist.githubusercontent.com/tillahoffmann/fc12349c02950e43a9edefe5907eb62c/raw/catchments_consolidated.zip>`__ (`Shapefile <https://en.wikipedia.org/wiki/Shapefile>`__ format).
 
 💾 Data
 -------
