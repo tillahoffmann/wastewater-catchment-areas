@@ -79,7 +79,7 @@ You can use the following template to request the raw data directly from water c
 🔎 Reproducing the Analysis
 ---------------------------
 
-1. Install `GDAL <https://gdal.org>`__ e.g.
+1. Install `GDAL <https://gdal.org>`__, e.g., on a Mac with `brew <https://brew.sh>`__ installed,
 
    .. code:: bash
 
