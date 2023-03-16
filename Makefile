@@ -19,7 +19,7 @@ clear_output :
 
 # Getting the data =================================================================================
 
-data : data/geoportal.statistics.gov.uk data/eea.europa.eu data/ons.gov.uk data/raw_catchments
+data : data/eea.europa.eu data/geoportal.statistics.gov.uk data/ons.gov.uk data/raw_catchments
 
 # --------------------------------------------------------------------------------------------------
 
@@ -83,9 +83,14 @@ data.shasum : ${DOWNLOAD_TARGETS} \
 		data/ons.gov.uk/lsoa_syoa_all_years_t.csv \
 		data/geoportal.statistics.gov.uk/countries20_BGC.zip \
 		data/geoportal.statistics.gov.uk/LSOA11_BGC.zip \
-		data/eea.europa.eu/waterbase_v?_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v1_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v2_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v3_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v4_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v5_csv/T_UWWTPs.csv \
 		data/eea.europa.eu/waterbase_v6_csv/dbo.VL_UWWTPS.csv \
-		data/eea.europa.eu/waterbase_v?_csv/UWWTPS.csv
+		data/eea.europa.eu/waterbase_v7_csv/UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v8_csv/UWWTPS.csv
 	shasum $^ > $@
 
 data/validation :
