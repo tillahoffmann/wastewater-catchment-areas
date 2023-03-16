@@ -1,0 +1,26 @@
+name: Wastewater Catchment Areas
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: pip
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+      - name: Download the data from the web archive.
+        run: |
+          make -j 4 data
+          make data/validation
+      - name: Run the analysis.
+        run: make analysis
