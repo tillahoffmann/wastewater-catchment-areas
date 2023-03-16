@@ -4,20 +4,25 @@ import shutil
 from urllib import request
 
 ROOT = 'data/eea.europa.eu'
+TABLE = {
+    1: '20190617175711',
+    2: '20190318143517',
+    3: '20190617213458',
+    4: '20190617213439',
+    5: '20190616193603',
+    6: '20210416204729',
+    7: '20230316164226',
+    8: '20230316164256',
+}
 
 
 def __main__():
-    # Create a table of all urls.
-    table = {
-        i + 1: f'https://www.eea.europa.eu/data-and-maps/data/waterbase-uwwtd-'
-        f'urban-waste-water-treatment-directive-{i}/waterbase-uwwtd/waterbase-uwwtd-csv-files/'
-        'at_download/file' for i in range(1, 8)
-    }
-    table[1] = 'https://www.eea.europa.eu/data-and-maps/data/waterbase-uwwtd-urban-' \
-        'waste-water-treatment-directive/waterbase-uwwtd/waterbase-uwwtd-csv-files/at_download/file'
-
     # Download all eight datasets.
-    for version, url in tqdm(table.items()):
+    for version, key in tqdm(TABLE.items()):
+        suffix = f'-{version - 1}' if version > 1 else ''
+        url = f'https://web.archive.org/web/{key}if_/https://www.eea.europa.eu/data-and-maps/' \
+            f'data/waterbase-uwwtd-urban-waste-water-treatment-directive{suffix}/waterbase-uwwtd/' \
+            'waterbase-uwwtd-csv-files/at_download/file'
         filename = None
         directory = os.path.join(ROOT, f'waterbase_v{version}_csv')
         if os.path.isdir(directory):
