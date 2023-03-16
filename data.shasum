@@ -15,7 +15,7 @@ cf61a9b2fea6621e730f6960a61a7d9f7cf24460  data/geoportal.statistics.gov.uk/LSOA1
 ab17cc0f8947a3c122192808bf70c17af78958fe  data/eea.europa.eu/waterbase_v2_csv/T_UWWTPS.csv
 873d8f76c59f2350b3a32b5af7cccfe9587377c3  data/eea.europa.eu/waterbase_v3_csv/T_UWWTPS.csv
 da0aa8f84e7dec9d22851224a608f8006ab0e611  data/eea.europa.eu/waterbase_v4_csv/T_UWWTPS.csv
-e9ac038c5b7bd9066bc7ea22e0187dcffd477dcc  data/eea.europa.eu/waterbase_v5_csv/T_UWWTPS.csv
+e9ac038c5b7bd9066bc7ea22e0187dcffd477dcc  data/eea.europa.eu/waterbase_v5_csv/T_UWWTPs.csv
 a658f0b9f6eaabcad37b6ea623136b5087629085  data/eea.europa.eu/waterbase_v6_csv/dbo.VL_UWWTPS.csv
 6d477c564ee6e86040f496ec7ddeacb0300ad2bc  data/eea.europa.eu/waterbase_v7_csv/UWWTPS.csv
 2e8b1cf41cbe054a510dbafaed39e8107944f087  data/eea.europa.eu/waterbase_v8_csv/UWWTPS.csv

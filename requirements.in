@@ -11,4 +11,5 @@ rtree
 scipy
 shapely
 sphinx
+retrying
 tqdm

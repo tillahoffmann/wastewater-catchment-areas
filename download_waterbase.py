@@ -2,6 +2,8 @@ from tqdm import tqdm
 import os
 import shutil
 from urllib import request
+import retrying
+
 
 ROOT = 'data/eea.europa.eu'
 TABLE = {
@@ -14,6 +16,9 @@ TABLE = {
     7: '20230316164226',
     8: '20230316164256',
 }
+urlretrieve = retrying.retry(wait_exponential_multiplier=1000, stop_max_attempt_number=3)(
+    request.urlretrieve
+)
 
 
 def __main__():
@@ -30,7 +35,7 @@ def __main__():
             continue
 
         try:
-            filename, _ = request.urlretrieve(url)
+            filename, _ = urlretrieve(url)
             target = ROOT
 
             # Depending on the version, the archive needs to be unpacked differently.

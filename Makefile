@@ -3,6 +3,7 @@
 
 NBEXECUTE = jupyter nbconvert --execute --output-dir=workspace --to=html
 OUTPUT_ROOT = data/wastewater_catchment_areas_public
+CURL = curl -L --retry 3 --retry-all-errors
 
 requirements.txt : requirements.in
 	pip-compile -v
@@ -18,7 +19,7 @@ clear_output :
 
 # Getting the data =================================================================================
 
-data : data/geoportal.statistics.gov.uk data/eea.europa.eu data/ons.gov.uk data/raw_catchments
+data : data/eea.europa.eu data/geoportal.statistics.gov.uk data/ons.gov.uk data/raw_catchments
 
 # --------------------------------------------------------------------------------------------------
 
@@ -30,13 +31,13 @@ data/geoportal.statistics.gov.uk : \
 # https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-december-2011-boundaries-generalised-clipped-bgc-ew-v3/about
 data/geoportal.statistics.gov.uk/LSOA11_BGC.zip :
 	mkdir -p $(dir $@)
-	curl -L -o $@ 'https://web.archive.org/web/20230316160948if_/https://opendata.arcgis.com/api/v3/datasets/a3940ee3ce4948f388e9993cb1d8cd0e_0/downloads/data?format=shp&spatialRefId=27700&where=1%3D1'
+	${CURL} -o $@ 'https://web.archive.org/web/20230316160948if_/https://opendata.arcgis.com/api/v3/datasets/a3940ee3ce4948f388e9993cb1d8cd0e_0/downloads/data?format=shp&spatialRefId=27700&where=1%3D1'
 
 # Generalised countries clipped to the coastline
 # https://geoportal.statistics.gov.uk/datasets/ons::countries-december-2020-uk-bgc/about
 data/geoportal.statistics.gov.uk/countries20_BGC.zip :
 	mkdir -p $(dir $@)
-	curl -L -o $@ 'https://web.archive.org/web/20230316160948if_/https://opendata.arcgis.com/api/v3/datasets/c8e90f1aaae34ac3ba3d79862000dbd7_0/downloads/data?format=shp&spatialRefId=27700&where=1%3D1'
+	${CURL} -o $@ 'https://web.archive.org/web/20230316160948if_/https://opendata.arcgis.com/api/v3/datasets/c8e90f1aaae34ac3ba3d79862000dbd7_0/downloads/data?format=shp&spatialRefId=27700&where=1%3D1'
 
 # --------------------------------------------------------------------------------------------------
 
@@ -47,13 +48,24 @@ data/ons.gov.uk : data/ons.gov.uk/lsoa_syoa_all_years_t.csv
 
 data/ons.gov.uk/lsoa_syoa_all_years_t.csv :
 	mkdir -p $(dir $@)
-	curl -L -o $(dir $@)/lsoasyoaallyearst.zip \
+	${CURL} -o $(dir $@)/lsoasyoaallyearst.zip \
 		'https://web.archive.org/web/20230316162603if_/https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/adhocs/009983populationestimatesforlowerlayersuperoutputareaslsoainenglandandwalessingleyearofageandsexmid2001tomid2017/lsoasyoaallyearst.zip'
 	unzip -d $(dir $@) $(dir $@)/lsoasyoaallyearst.zip
 
 # --------------------------------------------------------------------------------------------------
 
-data/eea.europa.eu :
+UWWTP_CSVS = data/eea.europa.eu/waterbase_v1_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v2_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v3_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v4_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v5_csv/T_UWWTPs.csv \
+		data/eea.europa.eu/waterbase_v6_csv/dbo.VL_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v7_csv/UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v8_csv/UWWTPS.csv
+
+data/eea.europa.eu : ${UWWTP_CSVS}
+
+${UWWTP_CSVS} :
 	python download_waterbase.py
 
 # --------------------------------------------------------------------------------------------------
@@ -76,15 +88,13 @@ data/raw_catchments : ${DOWNLOAD_TARGETS}
 
 ${DOWNLOAD_TARGETS} : data/raw_catchments/%.zip :
 	mkdir -p $(dir $@)
-	curl -L -o $@ ${DOWNLOAD_URL_$*}
+	${CURL} -o $@ ${DOWNLOAD_URL_$*}
 
 data.shasum : ${DOWNLOAD_TARGETS} \
 		data/ons.gov.uk/lsoa_syoa_all_years_t.csv \
 		data/geoportal.statistics.gov.uk/countries20_BGC.zip \
 		data/geoportal.statistics.gov.uk/LSOA11_BGC.zip \
-		data/eea.europa.eu/waterbase_v?_csv/T_UWWTPS.csv \
-		data/eea.europa.eu/waterbase_v6_csv/dbo.VL_UWWTPS.csv \
-		data/eea.europa.eu/waterbase_v?_csv/UWWTPS.csv
+		${UWWTP_CSVS}
 	shasum $^ > $@
 
 data/validation :
@@ -96,7 +106,7 @@ analysis : workspace/consolidate_waterbase.html \
 	workspace/consolidate_catchments.html \
 	workspace/match_waterbase_and_catchments.html \
 	workspace/estimate_population.html \
-	workspace/catchments_consolidated.zip
+	${OUTPUT_ROOT}/catchments_consolidated.zip
 
 ${OUTPUT_ROOT} :
 	mkdir -p $@
