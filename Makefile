@@ -54,7 +54,18 @@ data/ons.gov.uk/lsoa_syoa_all_years_t.csv :
 
 # --------------------------------------------------------------------------------------------------
 
-data/eea.europa.eu :
+UWWTP_CSVS = data/eea.europa.eu/waterbase_v1_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v2_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v3_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v4_csv/T_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v5_csv/T_UWWTPs.csv \
+		data/eea.europa.eu/waterbase_v6_csv/dbo.VL_UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v7_csv/UWWTPS.csv \
+		data/eea.europa.eu/waterbase_v8_csv/UWWTPS.csv
+
+data/eea.europa.eu : ${UWWTP_CSVS}
+
+${UWWTP_CSVS} :
 	python download_waterbase.py
 
 # --------------------------------------------------------------------------------------------------
@@ -83,14 +94,7 @@ data.shasum : ${DOWNLOAD_TARGETS} \
 		data/ons.gov.uk/lsoa_syoa_all_years_t.csv \
 		data/geoportal.statistics.gov.uk/countries20_BGC.zip \
 		data/geoportal.statistics.gov.uk/LSOA11_BGC.zip \
-		data/eea.europa.eu/waterbase_v1_csv/T_UWWTPS.csv \
-		data/eea.europa.eu/waterbase_v2_csv/T_UWWTPS.csv \
-		data/eea.europa.eu/waterbase_v3_csv/T_UWWTPS.csv \
-		data/eea.europa.eu/waterbase_v4_csv/T_UWWTPS.csv \
-		data/eea.europa.eu/waterbase_v5_csv/T_UWWTPs.csv \
-		data/eea.europa.eu/waterbase_v6_csv/dbo.VL_UWWTPS.csv \
-		data/eea.europa.eu/waterbase_v7_csv/UWWTPS.csv \
-		data/eea.europa.eu/waterbase_v8_csv/UWWTPS.csv
+		${UWWTP_CSVS}
 	shasum $^ > $@
 
 data/validation :
@@ -102,7 +106,7 @@ analysis : workspace/consolidate_waterbase.html \
 	workspace/consolidate_catchments.html \
 	workspace/match_waterbase_and_catchments.html \
 	workspace/estimate_population.html \
-	workspace/catchments_consolidated.zip
+	${OUTPUT_ROOT}/catchments_consolidated.zip
 
 ${OUTPUT_ROOT} :
 	mkdir -p $@
