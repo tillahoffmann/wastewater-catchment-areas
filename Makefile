@@ -30,13 +30,13 @@ data/geoportal.statistics.gov.uk : \
 # https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-december-2011-boundaries-generalised-clipped-bgc-ew-v3/about
 data/geoportal.statistics.gov.uk/LSOA11_BGC.zip :
 	mkdir -p $(dir $@)
-	curl -L -o $@ 'https://opendata.arcgis.com/api/v3/datasets/8bbadffa6ddc493a94078c195a1e293b_0/downloads/data?format=shp&spatialRefId=27700'
+	curl -L -o $@ 'https://web.archive.org/web/20230316160948if_/https://opendata.arcgis.com/api/v3/datasets/a3940ee3ce4948f388e9993cb1d8cd0e_0/downloads/data?format=shp&spatialRefId=27700&where=1%3D1'
 
 # Generalised countries clipped to the coastline
 # https://geoportal.statistics.gov.uk/datasets/ons::countries-december-2020-uk-bgc/about
 data/geoportal.statistics.gov.uk/countries20_BGC.zip :
 	mkdir -p $(dir $@)
-	curl -L -o $@ 'https://opendata.arcgis.com/api/v3/datasets/ad26732b081049d797620753db953185_0/downloads/data?format=shp&spatialRefId=27700'
+	curl -L -o $@ 'https://web.archive.org/web/20230316160948if_/https://opendata.arcgis.com/api/v3/datasets/c8e90f1aaae34ac3ba3d79862000dbd7_0/downloads/data?format=shp&spatialRefId=27700&where=1%3D1'
 
 # --------------------------------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ data/ons.gov.uk : data/ons.gov.uk/lsoa_syoa_all_years_t.csv
 data/ons.gov.uk/lsoa_syoa_all_years_t.csv :
 	mkdir -p $(dir $@)
 	curl -L -o $(dir $@)/lsoasyoaallyearst.zip \
-		'https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/adhocs/009983populationestimatesforlowerlayersuperoutputareaslsoainenglandandwalessingleyearofageandsexmid2001tomid2017/lsoasyoaallyearst.zip'
+		'https://web.archive.org/web/20230316162603if_/https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/adhocs/009983populationestimatesforlowerlayersuperoutputareaslsoainenglandandwalessingleyearofageandsexmid2001tomid2017/lsoasyoaallyearst.zip'
 	unzip -d $(dir $@) $(dir $@)/lsoasyoaallyearst.zip
 
 # --------------------------------------------------------------------------------------------------
@@ -60,16 +60,16 @@ data/eea.europa.eu :
 
 COMPANIES = anglian_water thames_water united_utilities welsh_water southern_water northumbrian_water \
 	yorkshire_water scottish_water severn_trent_water wessex_water
-DOWNLOAD_URL_anglian_water = https://www.whatdotheyknow.com/request/815216/response/2001959/attach/3/WWCATCHPOLY%2023%2004%202021.zip
-DOWNLOAD_URL_thames_water = https://www.whatdotheyknow.com/r/e5915cbb-dc3b-4797-bf75-fe7cd8eb75c0/response/1949301/attach/2/SDAC.zip
-DOWNLOAD_URL_united_utilities = https://www.whatdotheyknow.com/r/578035f9-a422-4c1b-a803-c257bf4f3414/response/1948454/attach/3/UUDrainageAreas040122.zip
-DOWNLOAD_URL_welsh_water = https://www.whatdotheyknow.com/r/f482d33f-e753-45b2-9518-45ddf92fa718/response/1948207/attach/3/DCWW%20Catchments.zip
-DOWNLOAD_URL_southern_water = https://www.whatdotheyknow.com/r/4cde4e22-1df0-42c8-b1a2-02e2cbd45b1b/response/1938054/attach/3/swsdrain%20region.zip
-DOWNLOAD_URL_northumbrian_water = https://www.whatdotheyknow.com/r/aad55c04-bbc4-47a9-bec8-ea7e2a97f6d3/response/1934324/attach/3/STW%20Catchments.zip
-DOWNLOAD_URL_yorkshire_water = https://www.whatdotheyknow.com/r/639740ed-b0a3-4609-b4b6-a30a052fe037/response/1945306/attach/3/EIR%20Wastewater%20Catchments.zip
-DOWNLOAD_URL_scottish_water = https://www.whatdotheyknow.com/r/0998addc-63f7-4a78-ac75-17fcf9b54b7d/response/1938176/attach/4/DOAs%20and%20WWTWs.zip
+DOWNLOAD_URL_anglian_water = https://web.archive.org/web/20220325183050if_/https://www.whatdotheyknow.com/request/815216/response/2001959/attach/3/WWCATCHPOLY%2023%2004%202021.zip
+DOWNLOAD_URL_thames_water = https://web.archive.org/web/20230316161703if_/https://www.whatdotheyknow.com/r/e5915cbb-dc3b-4797-bf75-fe7cd8eb75c0/response/1949301/attach/2/SDAC.zip
+DOWNLOAD_URL_united_utilities = https://web.archive.org/web/20230316161811if_/https://www.whatdotheyknow.com/r/578035f9-a422-4c1b-a803-c257bf4f3414/response/1948454/attach/3/UUDrainageAreas040122.zip
+DOWNLOAD_URL_welsh_water = https://web.archive.org/web/20230316161848if_/https://www.whatdotheyknow.com/r/f482d33f-e753-45b2-9518-45ddf92fa718/response/1948207/attach/3/DCWW%20Catchments.zip
+DOWNLOAD_URL_southern_water = https://web.archive.org/web/20230316161903if_/https://www.whatdotheyknow.com/r/4cde4e22-1df0-42c8-b1a2-02e2cbd45b1b/response/1938054/attach/3/swsdrain%20region.zip
+DOWNLOAD_URL_northumbrian_water = https://web.archive.org/web/20230316162136if_/https://www.whatdotheyknow.com/r/aad55c04-bbc4-47a9-bec8-ea7e2a97f6d3/response/1934324/attach/3/STW%20Catchments.zip
+DOWNLOAD_URL_yorkshire_water = https://web.archive.org/web/20230316162204if_/https://www.whatdotheyknow.com/r/639740ed-b0a3-4609-b4b6-a30a052fe037/response/1945306/attach/3/EIR%20Wastewater%20Catchments.zip
+DOWNLOAD_URL_scottish_water = https://web.archive.org/web/20230316162213/https://www.whatdotheyknow.com/r/0998addc-63f7-4a78-ac75-17fcf9b54b7d/response/1938176/attach/4/DOAs%20and%20WWTWs.zip
 DOWNLOAD_URL_severn_trent_water = https://web.archive.org/web/20220613151243/https://www.stwater.co.uk/content/dam/stw/my-account/boundary-map-2022.zip
-DOWNLOAD_URL_wessex_water = https://www.whatdotheyknow.com/r/bda33cfd-e23d-49e6-b651-4ff8997c83c3/response/1947874/attach/2/WxW%20WRC%20Catchments%20Dec2021.zip
+DOWNLOAD_URL_wessex_water = https://web.archive.org/web/20230316162447/https://www.whatdotheyknow.com/r/bda33cfd-e23d-49e6-b651-4ff8997c83c3/response/1947874/attach/2/WxW%20WRC%20Catchments%20Dec2021.zip
 DOWNLOAD_TARGETS = $(addprefix data/raw_catchments/,${COMPANIES:=.zip})
 
 data/raw_catchments : ${DOWNLOAD_TARGETS}
