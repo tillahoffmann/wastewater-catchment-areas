@@ -79,25 +79,31 @@ You can use the following template to request the raw data directly from water c
 🔎 Reproducing the Analysis
 ---------------------------
 
-1. Set up a clean python environment (this code has only been tested using python 3.9 on an Apple Silicon Macbook Pro), ideally using a virtual environment. Then install the required dependencies by running
+1. Install `GDAL <https://gdal.org>`__, e.g., on a Mac with `brew <https://brew.sh>`__ installed,
+
+   .. code:: bash
+
+      brew install gdal
+
+2. Set up a clean python environment (this code has only been tested using python 3.9 on an Apple Silicon Macbook Pro), ideally using a virtual environment. Then install the required dependencies by running
 
    .. code:: bash
 
       pip install -r requirements.txt
 
-2. Download the data (including data on Lower Layer Super Output Areas (LSOAs) and population in LSOAs from the ONS, Urban Wastewater Treatment Directive Data from the European Environment Agency, and wastewater catchment area data from whatdotheyknow.com) by running the following command. Catchment area data for Anglian Water and Severn Trent Water are available by submitting an Environmental Information Request, but they are not currently available for download from whatdotheyknow.com. Please use the Environmental Information Request template above or get in touch with the authors at :code:`till dot hoffmann at oxon dot org`.
+3. Download the data (including data on Lower Layer Super Output Areas (LSOAs) and population in LSOAs from the ONS, Urban Wastewater Treatment Directive Data from the European Environment Agency, and wastewater catchment area data from whatdotheyknow.com) by running the following command. Catchment area data for Anglian Water and Severn Trent Water are available by submitting an Environmental Information Request, but they are not currently available for download from whatdotheyknow.com. Please use the Environmental Information Request template above or get in touch with the authors at :code:`till dot hoffmann at oxon dot org`.
 
    .. code:: bash
 
       make data
 
-4. Validate all the data are in place and that you have the correct input data by running
+5. Validate all the data are in place and that you have the correct input data by running
 
    .. code:: bash
 
       make data/validation
 
-5. Run the analysis by executing
+6. Run the analysis by executing
 
    .. code:: bash
 
