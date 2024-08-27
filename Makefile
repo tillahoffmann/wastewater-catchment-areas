@@ -65,8 +65,13 @@ UWWTP_CSVS = data/eea.europa.eu/waterbase_v1_csv/T_UWWTPS.csv \
 
 data/eea.europa.eu : ${UWWTP_CSVS}
 
-${UWWTP_CSVS} :
-	python download_waterbase.py
+${UWWTP_CSVS} : data/eea.europa.eu/download_waterbase.log
+
+# Write a log file which the raw data rely on in the dependency graph. Otherwise, the download
+# script is executed many times if `make` is launched with the `-j` option.
+data/eea.europa.eu/download_waterbase.log :
+	python download_waterbase.py > ${@:.log=.log.tmp}
+	mv ${@:.log=.log.tmp} $@
 
 # --------------------------------------------------------------------------------------------------
 
