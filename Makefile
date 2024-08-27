@@ -70,6 +70,7 @@ ${UWWTP_CSVS} : data/eea.europa.eu/download_waterbase.log
 # Write a log file which the raw data rely on in the dependency graph. Otherwise, the download
 # script is executed many times if `make` is launched with the `-j` option.
 data/eea.europa.eu/download_waterbase.log :
+	mkdir -p data/eea.europa.eu/
 	python download_waterbase.py > ${@:.log=.log.tmp}
 	mv ${@:.log=.log.tmp} $@
 
