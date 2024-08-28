@@ -37,7 +37,7 @@ data/geoportal.statistics.gov.uk/LSOA11_BGC.zip :
 # https://geoportal.statistics.gov.uk/datasets/ons::countries-december-2020-uk-bgc/about
 data/geoportal.statistics.gov.uk/countries20_BGC.zip :
 	mkdir -p $(dir $@)
-	${CURL} -o $@ 'https://web.archive.org/web/20230316160948if_/https://opendata.arcgis.com/api/v3/datasets/c8e90f1aaae34ac3ba3d79862000dbd7_0/downloads/data?format=shp&spatialRefId=27700&where=1%3D1'
+	${CURL} -o $@ 'https://web.archive.org/web/20240828001540/https://opendata.arcgis.com/api/v3/datasets/c8e90f1aaae34ac3ba3d79862000dbd7_0/downloads/data?format=shp&spatialRefId=27700&where=1%3D1'
 
 # --------------------------------------------------------------------------------------------------
 
@@ -65,8 +65,14 @@ UWWTP_CSVS = data/eea.europa.eu/waterbase_v1_csv/T_UWWTPS.csv \
 
 data/eea.europa.eu : ${UWWTP_CSVS}
 
-${UWWTP_CSVS} :
-	python download_waterbase.py
+${UWWTP_CSVS} : data/eea.europa.eu/download_waterbase.log
+
+# Write a log file which the raw data rely on in the dependency graph. Otherwise, the download
+# script is executed many times if `make` is launched with the `-j` option.
+data/eea.europa.eu/download_waterbase.log :
+	mkdir -p data/eea.europa.eu/
+	python download_waterbase.py > ${@:.log=.log.tmp}
+	mv ${@:.log=.log.tmp} $@
 
 # --------------------------------------------------------------------------------------------------
 
