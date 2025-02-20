@@ -90,13 +90,27 @@ DOWNLOAD_URL_severn_trent_water = https://web.archive.org/web/20220613151243/htt
 DOWNLOAD_URL_wessex_water = https://web.archive.org/web/20230316162447/https://www.whatdotheyknow.com/r/bda33cfd-e23d-49e6-b651-4ff8997c83c3/response/1947874/attach/2/WxW%20WRC%20Catchments%20Dec2021.zip
 DOWNLOAD_TARGETS = $(addprefix data/raw_catchments/,${COMPANIES:=.zip})
 
-data/raw_catchments : ${DOWNLOAD_TARGETS}
+# We seperately download the South West Water shape file because it is not a zip file.
+SOUTH_WEST_WATER_TARGETS = $(addprefix data/raw_catchments/south_west_water.,shx shp prj dbf)
+# TODO: Update to web archive urls once archived.
+SOUTH_WEST_WATER_DOWNLOAD_URL_shp = https://www.whatdotheyknow.com/request/catchment_geospatial_data_files/response/2781770/attach/8/EIR24252%20CATCHMENT%20POLYGONS.shp
+SOUTH_WEST_WATER_DOWNLOAD_URL_shx = https://www.whatdotheyknow.com/request/catchment_geospatial_data_files/response/2781770/attach/9/EIR24252%20CATCHMENT%20POLYGONS.shx
+SOUTH_WEST_WATER_DOWNLOAD_URL_prj = https://www.whatdotheyknow.com/request/catchment_geospatial_data_files/response/2781770/attach/7/EIR24252%20CATCHMENT%20POLYGONS.prj
+SOUTH_WEST_WATER_DOWNLOAD_URL_dbf = https://www.whatdotheyknow.com/request/catchment_geospatial_data_files/response/2781770/attach/6/EIR24252%20CATCHMENT%20POLYGONS.dbf
+
+data/raw_catchments : ${DOWNLOAD_TARGETS} ${SOUTH_WEST_WATER_TARGETS}
+
+
+${SOUTH_WEST_WATER_TARGETS} : data/raw_catchments/south_west_water.% :
+	mkdir -p $(dir $@)
+	${CURL} -o $@ ${SOUTH_WEST_WATER_DOWNLOAD_URL_$*}
 
 ${DOWNLOAD_TARGETS} : data/raw_catchments/%.zip :
 	mkdir -p $(dir $@)
 	${CURL} -o $@ ${DOWNLOAD_URL_$*}
 
 data.shasum : ${DOWNLOAD_TARGETS} \
+		${SOUTH_WEST_WATER_TARGETS} \
 		data/ons.gov.uk/lsoa_syoa_all_years_t.csv \
 		data/geoportal.statistics.gov.uk/countries20_BGC.zip \
 		data/geoportal.statistics.gov.uk/LSOA11_BGC.zip \

@@ -8,6 +8,10 @@ de84441bd99e576303375cf9d291940c4d5e1251  data/raw_catchments/southern_water.zip
 84aea26aff26b4314856278f840bf4e04669d029  data/raw_catchments/scottish_water.zip
 87198ee92c6d15ed869d13b9c603ec5d4e6a3658  data/raw_catchments/severn_trent_water.zip
 0c86146193ac8cd3196ccc4fe39c061c780b5680  data/raw_catchments/wessex_water.zip
+257ba423355c9d3a7323d05ab7875301f5fbbff1  data/raw_catchments/south_west_water.shx
+6a059725d76445b49729ae8084582132eb3a53f5  data/raw_catchments/south_west_water.shp
+d4bbcc4d30eba60a8740f20607b9805a0e35c8e7  data/raw_catchments/south_west_water.prj
+81867e31b50038831105a3a1f712fd4798a675fe  data/raw_catchments/south_west_water.dbf
 1053a4a9ff9af2997d8f3c46b1ee86fba9177474  data/ons.gov.uk/lsoa_syoa_all_years_t.csv
 713db0e159c36d462deb0b22e85ad9d5e3c6415f  data/geoportal.statistics.gov.uk/countries20_BGC.zip
 cf61a9b2fea6621e730f6960a61a7d9f7cf24460  data/geoportal.statistics.gov.uk/LSOA11_BGC.zip
