@@ -153,5 +153,10 @@ workspace/estimate_population.html : estimate_population.md data/ons.gov.uk ${OU
 		${OUTPUT_ROOT}/waterbase_catchment_lookup.csv
 	${EXECUTE_NB} $<
 
-${OUTPUT_ROOT}/catchments_consolidated.zip : ${OUTPUT_ROOT}/catchments_consolidated.shp
-	zip $@ ${@:.zip=}*
+${OUTPUT_ROOT}/catchments_consolidated.zip : \
+		${OUTPUT_ROOT}/catchments_consolidated.shp \
+		${OUTPUT_ROOT}/catchments_consolidated.cpg \
+		${OUTPUT_ROOT}/catchments_consolidated.prj \
+		${OUTPUT_ROOT}/catchments_consolidated.dbf \
+		${OUTPUT_ROOT}/catchments_consolidated.shx
+	zip -j $@ $^
