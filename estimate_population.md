@@ -114,6 +114,7 @@ frac = (
     / lsoa_population[lsoa_population.year == year].Pop_Total.sum()
 )
 print(f"fraction covered: {frac}")
+print(f"total covered: {summary.population.sum()}m")
 summary
 ```
 
