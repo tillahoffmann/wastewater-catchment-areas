@@ -95,7 +95,7 @@ geospatial_estimate.head()
 ```python
 # Generate summary for table 1 of the publication.
 year = 2016
-method = "norm_area_covered"
+method = "norm_intersection_sum"
 
 summary = geospatial_estimate.reset_index()
 summary = summary[summary.year == year]
@@ -135,7 +135,7 @@ merged = merged.drop_duplicates(['uwwCode', 'year'])
 
 # Evaluate the pearson correlation on the log scale (omitting treatment works without load).
 f = merged.uwwLoadEnteringUWWTP > 0
-stats.pearsonr(np.log(merged.uwwLoadEnteringUWWTP[f]), np.log(merged.norm_area_covered[f]))
+stats.pearsonr(np.log(merged.uwwLoadEnteringUWWTP[f]), np.log(merged[method][f]))
 ```
 
 ```python
@@ -145,7 +145,7 @@ gs = fig.add_gridspec(2, 2)
 ax = fig.add_subplot(gs[:, 0])
 year = 2016
 subset = merged[merged.year == year]
-ax.scatter(subset.uwwLoadEnteringUWWTP, subset.norm_area_covered, marker='.', alpha=.5)
+ax.scatter(subset.uwwLoadEnteringUWWTP, subset[method], marker='.', alpha=.5)
 ax.set_yscale('log')
 ax.set_xscale('log')
 lims = subset.uwwLoadEnteringUWWTP.quantile([0, 1])
@@ -175,16 +175,12 @@ annotations = [
         'yfactor': 3,
         'kwargs': {'ha': 'center'},
     },
-    # For better estimation of population coverage, we've dropped the Chalton
-    # treatment work as it overlaps with East Hyde (see catchment consolidation
-    # notebook for annotations and catchment-LSOA matching for dropping 
-    # annotated catchments).
-    # {
-    #     'code': 'UKENAN_AW_TP000051',
-    #     'label': 'Chalton',
-    #     'xfactor': 1 / 3,
-    #     'kwargs': {'ha': 'right'},
-    # },
+    {
+        'code': 'UKENAN_AW_TP000051',
+        'label': 'Chalton',
+        'xfactor': 1 / 3,
+        'kwargs': {'ha': 'right'},
+    },
 ]
 indexed = subset.set_index('uwwCode')
 for annotation in annotations:
@@ -192,9 +188,9 @@ for annotation in annotations:
 
     ax.annotate(
         annotation['label'],
-        (item.uwwLoadEnteringUWWTP, item.norm_area_covered),
+        (item.uwwLoadEnteringUWWTP, item[method]),
         (item.uwwLoadEnteringUWWTP * annotation.get('xfactor', 1),
-            item.norm_area_covered * annotation.get('yfactor', 1)),
+            item[method] * annotation.get('yfactor', 1)),
         arrowprops={
             'arrowstyle': '-|>',
         },
@@ -204,7 +200,7 @@ for annotation in annotations:
     print(annotation['label'], item.uwwName)
 
 ax3 = ax = fig.add_subplot(gs[:, 1])
-target = lambda x: np.median(np.abs(np.log10(x.norm_area_covered / x.uwwLoadEnteringUWWTP)))
+target = lambda x: np.median(np.abs(np.log10(x[method] / x.uwwLoadEnteringUWWTP)))
 
 x = []
 y = []
