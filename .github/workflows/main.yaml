@@ -2,6 +2,8 @@ name: Wastewater Catchment Areas
 on:
   push:
     branches: [main]
+    tags:
+      - '*'
   pull_request:
     branches: [main]
   schedule:
