@@ -1,8 +1,9 @@
 .PHONY : data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu \
 	data/raw_catchments data/validation data.shasum
 
-EXECUTE_NB = cd $(dir $<) \
-        && jupytext --to ipynb --output - $(notdir $<) \
+# This only works for notebooks at the root level.
+EXECUTE_NB = mkdir -p $(dir $@) \
+        && jupytext --to ipynb --output - $< \
         | jupyter nbconvert --stdin --execute --to html --output $@
 OUTPUT_ROOT = data/wastewater_catchment_areas_public
 CURL = curl -L --retry 3 --retry-all-errors
@@ -127,31 +128,27 @@ analysis : workspace/consolidate_waterbase.html \
 ${OUTPUT_ROOT} :
 	mkdir -p $@
 
-workspace :
-	mkdir -p $@
+${OUTPUT_ROOT}/waterbase_consolidated.csv : workspace/consolidate_waterbase.html
+${OUTPUT_ROOT}/catchments_consolidated.shp overview.pdf : workspace/consolidate_catchments.html
+${OUTPUT_ROOT}/waterbase_catchment_lookup.csv : workspace/match_waterbase_and_catchments.html
+${OUTPUT_ROOT}/lsoa_coverage.csv ${OUTPUT_ROOT}/lsoa_catchment_lookup.csv : workspace/match_catchments_and_lsoas.html
+${OUTPUT_ROOT}/population_estimates.csv population_estimates.pdf estimation_method.pdf : workspace/estimate_population.html
 
-workspace/consolidate_waterbase.html ${OUTPUT_ROOT}/waterbase_consolidated.csv \
-		 : consolidate_waterbase.md workspace ${OUTPUT_ROOT} data/eea.europa.eu
+workspace/consolidate_waterbase.html : consolidate_waterbase.md ${OUTPUT_ROOT} data/eea.europa.eu
 	${EXECUTE_NB} $<
 
-workspace/consolidate_catchments.html ${OUTPUT_ROOT}/catchments_consolidated.shp overview.pdf \
-		: consolidate_catchments.md workspace ${OUTPUT_ROOT} data/raw_catchments
+workspace/consolidate_catchments.html : consolidate_catchments.md ${OUTPUT_ROOT} data/raw_catchments
 	${EXECUTE_NB} $<
 
-workspace/match_waterbase_and_catchments.html ${OUTPUT_ROOT}/waterbase_catchment_lookup.csv \
-		: match_waterbase_and_catchments.md workspace ${OUTPUT_ROOT} \
+workspace/match_waterbase_and_catchments.html : match_waterbase_and_catchments.md ${OUTPUT_ROOT} \
 		${OUTPUT_ROOT}/catchments_consolidated.shp ${OUTPUT_ROOT}/waterbase_consolidated.csv
 	${EXECUTE_NB} $<
 
-workspace/match_catchments_and_lsoas.html ${OUTPUT_ROOT}/lsoa_coverage.csv \
-	${OUTPUT_ROOT}/lsoa_catchment_lookup.csv \
-		: match_catchments_and_lsoas.md workspace ${OUTPUT_ROOT} \
+workspace/match_catchments_and_lsoas.html : match_catchments_and_lsoas.md ${OUTPUT_ROOT} \
 		${OUTPUT_ROOT}/catchments_consolidated.shp data/geoportal.statistics.gov.uk
 	${EXECUTE_NB} $<
 
-workspace/estimate_population.html ${OUTPUT_ROOT}/population_estimates.csv \
-	population_estimates.pdf estimation_method.pdf \
-		: estimate_population.md data/ons.gov.uk workspace ${OUTPUT_ROOT} \
+workspace/estimate_population.html : estimate_population.md data/ons.gov.uk ${OUTPUT_ROOT} \
 		${OUTPUT_ROOT}/lsoa_catchment_lookup.csv ${OUTPUT_ROOT}/lsoa_coverage.csv \
 		${OUTPUT_ROOT}/waterbase_catchment_lookup.csv
 	${EXECUTE_NB} $<
