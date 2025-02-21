@@ -3,6 +3,7 @@ fiona
 flake8
 geopandas
 matplotlib
+networkx
 numpy
 jupyter
 pandas

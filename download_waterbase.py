@@ -25,9 +25,11 @@ def __main__():
     # Download all eight datasets.
     for version, key in tqdm(TABLE.items()):
         suffix = f'-{version - 1}' if version > 1 else ''
-        url = f'https://web.archive.org/web/{key}if_/https://www.eea.europa.eu/data-and-maps/' \
-            f'data/waterbase-uwwtd-urban-waste-water-treatment-directive{suffix}/waterbase-uwwtd/' \
+        url = (
+            f'https://web.archive.org/web/{key}if_/https://www.eea.europa.eu/data-and-maps/'
+            f'data/waterbase-uwwtd-urban-waste-water-treatment-directive{suffix}/waterbase-uwwtd/'
             'waterbase-uwwtd-csv-files/at_download/file'
+        )
         filename = None
         directory = os.path.join(ROOT, f'waterbase_v{version}_csv')
         if os.path.isdir(directory):
