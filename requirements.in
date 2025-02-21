@@ -9,6 +9,7 @@ networkx
 # ValueError: Unable to avoid copy while creating an array as requested.
 numpy<2
 jupyter
+jupytext
 pandas
 pyproj
 rtree

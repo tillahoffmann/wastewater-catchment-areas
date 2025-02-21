@@ -147,3 +147,4 @@ data
 
 # Don't include figures.
 /*.pdf
+*.ipynb

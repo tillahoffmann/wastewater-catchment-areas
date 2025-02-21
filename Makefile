@@ -1,7 +1,9 @@
-.PHONY : clear_output data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu \
+.PHONY : data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu \
 	data/raw_catchments data/validation data.shasum
 
-NBEXECUTE = jupyter nbconvert --execute --output-dir=workspace --to=html
+EXECUTE_NB = cd $(dir $<) \
+        && jupytext --to ipynb --output - $(notdir $<) \
+        | jupyter nbconvert --stdin --execute --to html --output $@
 OUTPUT_ROOT = data/wastewater_catchment_areas_public
 CURL = curl -L --retry 3 --retry-all-errors
 
@@ -10,9 +12,6 @@ requirements.txt : requirements.in
 
 sync : requirements.txt
 	pip-sync
-
-clear_output :
-	jupyter nbconvert --clear-output *.ipynb
 
 # Getting the data =================================================================================
 
@@ -132,30 +131,30 @@ workspace :
 	mkdir -p $@
 
 workspace/consolidate_waterbase.html ${OUTPUT_ROOT}/waterbase_consolidated.csv \
-		 : consolidate_waterbase.ipynb workspace ${OUTPUT_ROOT} data/eea.europa.eu
-	${NBEXECUTE} $<
+		 : consolidate_waterbase.md workspace ${OUTPUT_ROOT} data/eea.europa.eu
+	${EXECUTE_NB} $<
 
 workspace/consolidate_catchments.html ${OUTPUT_ROOT}/catchments_consolidated.shp overview.pdf \
-		: consolidate_catchments.ipynb workspace ${OUTPUT_ROOT} data/raw_catchments
-	${NBEXECUTE} $<
+		: consolidate_catchments.md workspace ${OUTPUT_ROOT} data/raw_catchments
+	${EXECUTE_NB} $<
 
 workspace/match_waterbase_and_catchments.html ${OUTPUT_ROOT}/waterbase_catchment_lookup.csv \
-		: match_waterbase_and_catchments.ipynb workspace ${OUTPUT_ROOT} \
+		: match_waterbase_and_catchments.md workspace ${OUTPUT_ROOT} \
 		${OUTPUT_ROOT}/catchments_consolidated.shp ${OUTPUT_ROOT}/waterbase_consolidated.csv
-	${NBEXECUTE} $<
+	${EXECUTE_NB} $<
 
 workspace/match_catchments_and_lsoas.html ${OUTPUT_ROOT}/lsoa_coverage.csv \
 	${OUTPUT_ROOT}/lsoa_catchment_lookup.csv \
-		: match_catchments_and_lsoas.ipynb workspace ${OUTPUT_ROOT} \
+		: match_catchments_and_lsoas.md workspace ${OUTPUT_ROOT} \
 		${OUTPUT_ROOT}/catchments_consolidated.shp data/geoportal.statistics.gov.uk
-	${NBEXECUTE} $<
+	${EXECUTE_NB} $<
 
 workspace/estimate_population.html ${OUTPUT_ROOT}/population_estimates.csv \
 	population_estimates.pdf estimation_method.pdf \
-		: estimate_population.ipynb data/ons.gov.uk workspace ${OUTPUT_ROOT} \
+		: estimate_population.md data/ons.gov.uk workspace ${OUTPUT_ROOT} \
 		${OUTPUT_ROOT}/lsoa_catchment_lookup.csv ${OUTPUT_ROOT}/lsoa_coverage.csv \
 		${OUTPUT_ROOT}/waterbase_catchment_lookup.csv
-	${NBEXECUTE} $<
+	${EXECUTE_NB} $<
 
 ${OUTPUT_ROOT}/catchments_consolidated.zip : ${OUTPUT_ROOT}/catchments_consolidated.shp
 	zip $@ ${@:.zip=}*

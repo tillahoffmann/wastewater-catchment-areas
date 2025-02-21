@@ -173,8 +173,14 @@ jupyterlab-server==2.27.3
     #   notebook
 jupyterlab-widgets==3.0.13
     # via ipywidgets
+jupytext==1.16.7
+    # via -r requirements.in
 kiwisolver==1.4.8
     # via matplotlib
+markdown-it-py==3.0.0
+    # via
+    #   jupytext
+    #   mdit-py-plugins
 markupsafe==3.0.2
     # via
     #   jinja2
@@ -187,6 +193,10 @@ matplotlib-inline==0.1.7
     #   ipython
 mccabe==0.7.0
     # via flake8
+mdit-py-plugins==0.4.2
+    # via jupytext
+mdurl==0.1.2
+    # via markdown-it-py
 mistune==3.1.2
     # via nbconvert
 nbclient==0.10.2
@@ -198,6 +208,7 @@ nbconvert==7.16.6
 nbformat==5.10.4
     # via
     #   jupyter-server
+    #   jupytext
     #   nbclient
     #   nbconvert
 nest-asyncio==1.6.0
@@ -228,6 +239,7 @@ packaging==24.2
     #   jupyter-server
     #   jupyterlab
     #   jupyterlab-server
+    #   jupytext
     #   matplotlib
     #   nbconvert
 pandas==2.2.3
@@ -286,7 +298,9 @@ python-json-logger==3.2.1
 pytz==2025.1
     # via pandas
 pyyaml==6.0.2
-    # via jupyter-events
+    # via
+    #   jupyter-events
+    #   jupytext
 pyzmq==26.2.1
     # via
     #   ipykernel
