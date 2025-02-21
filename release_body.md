@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> The copyright of wastewater catchment area data rests with each sewerage service provider. Data were obtained through requests under the [Environmental Information Regulations 2004](https://en.wikipedia.org/wiki/Environmental_Information_Regulations_2004), and they are publicly available on whatdotheyknow.com (see the README section on [Environmental Information Requests](https://github.com/tillahoffmann/wastewater-catchment-areas?tab=readme-ov-file#environmental-information-requests) for further details). The MIT only applies to the source code in this repository, not the data.
+> The copyright of wastewater catchment area data rests with each sewerage service provider. Data were obtained through requests under the [Environmental Information Regulations 2004](https://en.wikipedia.org/wiki/Environmental_Information_Regulations_2004), and they are publicly available on whatdotheyknow.com (see the README section on [Environmental Information Requests](https://github.com/tillahoffmann/wastewater-catchment-areas?tab=readme-ov-file#environmental-information-requests) for further details). The MIT license only applies to the source code in this repository, not the data.
 >
 > The authors make no warranty on the correctness or completeness of the data.
 
