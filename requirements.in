@@ -1,16 +1,18 @@
 chardet
-fiona
+# AttributeError: module 'fiona' has no attribute 'path'
+fiona<1.10.0
 flake8
-geopandas
+# AttributeError: 'SpatialIndex' object has no attribute 'query_bulk'
+geopandas<0.13.0
 matplotlib
 networkx
-numpy
+# ValueError: Unable to avoid copy while creating an array as requested.
+numpy<2
 jupyter
 pandas
 pyproj
 rtree
 scipy
 shapely
-sphinx
 retrying
 tqdm

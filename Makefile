@@ -1,4 +1,4 @@
-.PHONY : clear_output data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu docs \
+.PHONY : clear_output data data/geoportal.statistics.gov.uk data/ons.gov.uk data/eea.europa.eu \
 	data/raw_catchments data/validation data.shasum
 
 NBEXECUTE = jupyter nbconvert --execute --output-dir=workspace --to=html
@@ -10,9 +10,6 @@ requirements.txt : requirements.in
 
 sync : requirements.txt
 	pip-sync
-
-docs :
-	sphinx-build . docs/_build
 
 clear_output :
 	jupyter nbconvert --clear-output *.ipynb
