@@ -30,17 +30,13 @@ catchments = gpd.read_file(ROOT / 'catchments_consolidated.shp').set_index('iden
 print(f'loaded {len(catchments)} catchments')
 catchments.head()
 
-# Drop catchments that are annotated with an overlap comment.
-catchments = catchments[~catchments.comment.str.startswith("Overlap").fillna(False)]
-print(f'retained {len(catchments)} after dropping annotated catchments')
-
 # Drop all scottish water catchments because there should not be overlap with LSOAs.
 catchments = catchments[catchments.company != "scottish_water"]
 print(f'retained {len(catchments)} after dropping Scottish Water')
 ```
 
 ```python
-# Find non-trivial intersections between treatment works. That have not already been 
+# Find non-trivial intersections between treatment works. That have not already been
 # annotated.
 sindex = catchments.geometry.sindex
 indices = sindex.query_bulk(catchments.geometry).T
@@ -71,7 +67,7 @@ identifiers = catchments.index.values[indices]
 graph = nx.Graph()
 graph.add_edges_from([(*edge, {"weight": area}) for edge, area in zip(identifiers, intersection_areas)])
 components = list(sorted(
-    nx.connected_components(graph), 
+    nx.connected_components(graph),
     key=lambda nodes: sum(data["weight"] for *_, data in graph.edges(nodes, data=True)),
     reverse=True,
 ))
@@ -117,7 +113,7 @@ grouped = intersections.groupby("LSOA11CD")
 frac_covered = grouped.intersection_area.sum() / lsoas.geometry.area
 
 coverage = pd.DataFrame({
-    "n_catchments": grouped.identifier.nunique(), 
+    "n_catchments": grouped.identifier.nunique(),
     "frac": frac_covered,
 })
 
@@ -152,11 +148,11 @@ for lsoa_code, subset in tqdm(intersections.groupby('LSOA11CD')):
     else:
         identifier = subset.identifier.iloc[0]
         all_intersecting = catchments.geometry.loc[identifier]
-    # Evaluate the intersection of the LSOA with any catchment by intersecting with the spatial 
+    # Evaluate the intersection of the LSOA with any catchment by intersecting with the spatial
     # union of the catchments.
     intersection = all_intersecting.intersection(lsoas.geometry.loc[lsoa_code])
     coverage[lsoa_code] = intersection.area
-    
+
 coverage = pd.Series(coverage)
 
 # Compute the coverage and fill with zeros where there are no intersections.
