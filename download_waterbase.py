@@ -6,12 +6,14 @@ import retrying
 
 
 ROOT = 'data/eea.europa.eu'
+# Timestamps for Wayback Machine archives. Versions 2, 3, 5 need older timestamps
+# because later archives are truncated to 1 MB.
 TABLE = {
     1: '20190617175711',
-    2: '20190318143517',
-    3: '20190617213458',
+    2: '20180328130948',  # Older timestamp with full 3.2 MB archive
+    3: '20180328130948',  # Older timestamp with full 3.2 MB archive
     4: '20190617213439',
-    5: '20190616193603',
+    5: '20180325033703',  # Older timestamp with full 4.1 MB archive
     6: '20210416204729',
     7: '20230316164226',
     8: '20230316164256',
@@ -28,7 +30,7 @@ def __main__():
         url = (
             f'https://web.archive.org/web/{key}if_/https://www.eea.europa.eu/data-and-maps/'
             f'data/waterbase-uwwtd-urban-waste-water-treatment-directive{suffix}/waterbase-uwwtd/'
-            'waterbase-uwwtd-csv-files/at_download/file'
+            'waterbase-uwwtd-csv-files/download'
         )
         filename = None
         directory = os.path.join(ROOT, f'waterbase_v{version}_csv')
@@ -38,6 +40,10 @@ def __main__():
 
         try:
             filename, _ = urlretrieve(url)
+            with open(filename, 'rb') as f:
+                magic = f.read(2)
+            if magic != b'PK':
+                raise RuntimeError(f"expected zip (PK), got {magic!r}")
             target = ROOT
 
             # Depending on the version, the archive needs to be unpacked differently.

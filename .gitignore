@@ -145,6 +145,7 @@ workspace/
 playground/
 data
 
-# Don't include figures.
+# Don't include PDF figures (but do include PNGs).
 /*.pdf
+figures/*.pdf
 *.ipynb
