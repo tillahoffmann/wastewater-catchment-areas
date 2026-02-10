@@ -737,7 +737,8 @@ handles_labels = [
 fig.legend(*zip(*handles_labels), ncol=2, loc='upper left', frameon=False)
 
 fig.tight_layout()
-fig.savefig('overview.pdf')
+fig.savefig('figures/overview.pdf')
+fig.savefig('figures/overview.png')
 ```
 
 ```python

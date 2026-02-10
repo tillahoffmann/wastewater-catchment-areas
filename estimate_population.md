@@ -225,7 +225,8 @@ plt.setp(ax.xaxis.get_ticklabels(), rotation=30, ha='right')
 ax.text(0.95, 0.95, '(b)', transform=ax.transAxes, ha='right', va='top')
 
 fig.tight_layout()
-fig.savefig('population-estimates.pdf')
+fig.savefig('figures/population-estimates.pdf')
+fig.savefig('figures/population-estimates.png')
 
 # Show the log10 median absolute error over time.
 y
@@ -261,5 +262,6 @@ labels = subset.name.str.replace(' STW', '').str.title()
 ax.legend(handles, labels)
 
 fig.tight_layout()
-fig.savefig('estimation_method.pdf')
+fig.savefig('figures/estimation_method.pdf')
+fig.savefig('figures/estimation_method.png')
 ```

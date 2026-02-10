@@ -8,6 +8,15 @@ EXECUTE_NB = mkdir -p $(dir $@) \
 OUTPUT_ROOT = data/wastewater_catchment_areas_public
 CURL = curl -L --retry 3 --retry-all-errors
 
+# Verify downloaded file is not an HTML error page.
+define CHECK_NOT_HTML
+	@if file $@ | grep -q 'HTML'; then \
+		echo "ERROR: $@ is HTML (probably an error page): $$(file $@)"; \
+		rm -f $@; \
+		exit 1; \
+	fi
+endef
+
 requirements.txt : requirements.in
 	pip-compile -v
 
@@ -29,12 +38,14 @@ data/geoportal.statistics.gov.uk : \
 data/geoportal.statistics.gov.uk/LSOA11_BGC.zip :
 	mkdir -p $(dir $@)
 	${CURL} -o $@ 'https://web.archive.org/web/20230316160948if_/https://opendata.arcgis.com/api/v3/datasets/a3940ee3ce4948f388e9993cb1d8cd0e_0/downloads/data?format=shp&spatialRefId=27700&where=1%3D1'
+	$(CHECK_NOT_HTML)
 
 # Generalised countries clipped to the coastline
 # https://geoportal.statistics.gov.uk/datasets/ons::countries-december-2020-uk-bgc/about
 data/geoportal.statistics.gov.uk/countries20_BGC.zip :
 	mkdir -p $(dir $@)
 	${CURL} -o $@ 'https://web.archive.org/web/20240828001540/https://opendata.arcgis.com/api/v3/datasets/c8e90f1aaae34ac3ba3d79862000dbd7_0/downloads/data?format=shp&spatialRefId=27700&where=1%3D1'
+	$(CHECK_NOT_HTML)
 
 # --------------------------------------------------------------------------------------------------
 
@@ -47,6 +58,11 @@ data/ons.gov.uk/lsoa_syoa_all_years_t.csv :
 	mkdir -p $(dir $@)
 	${CURL} -o $(dir $@)/lsoasyoaallyearst.zip \
 		'https://web.archive.org/web/20230316162603if_/https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/populationandmigration/populationestimates/adhocs/009983populationestimatesforlowerlayersuperoutputareaslsoainenglandandwalessingleyearofageandsexmid2001tomid2017/lsoasyoaallyearst.zip'
+	@if file $(dir $@)/lsoasyoaallyearst.zip | grep -q 'HTML'; then \
+		echo "ERROR: $(dir $@)/lsoasyoaallyearst.zip is HTML (probably an error page)"; \
+		rm -f $(dir $@)/lsoasyoaallyearst.zip; \
+		exit 1; \
+	fi
 	unzip -d $(dir $@) $(dir $@)/lsoasyoaallyearst.zip
 
 # --------------------------------------------------------------------------------------------------
@@ -101,10 +117,12 @@ data/raw_catchments : ${DOWNLOAD_TARGETS} ${SOUTH_WEST_WATER_TARGETS}
 ${SOUTH_WEST_WATER_TARGETS} : data/raw_catchments/south_west_water.% :
 	mkdir -p $(dir $@)
 	${CURL} -o $@ ${SOUTH_WEST_WATER_DOWNLOAD_URL_$*}
+	$(CHECK_NOT_HTML)
 
 ${DOWNLOAD_TARGETS} : data/raw_catchments/%.zip :
 	mkdir -p $(dir $@)
 	${CURL} -o $@ ${DOWNLOAD_URL_$*}
+	$(CHECK_NOT_HTML)
 
 data.shasum : ${DOWNLOAD_TARGETS} \
 		${SOUTH_WEST_WATER_TARGETS} \
