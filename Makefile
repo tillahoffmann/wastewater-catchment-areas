@@ -103,13 +103,17 @@ DOWNLOAD_URL_severn_trent_water = https://web.archive.org/web/20220613151243/htt
 DOWNLOAD_URL_wessex_water = https://web.archive.org/web/20230316162447/https://www.whatdotheyknow.com/r/bda33cfd-e23d-49e6-b651-4ff8997c83c3/response/1947874/attach/2/WxW%20WRC%20Catchments%20Dec2021.zip
 DOWNLOAD_TARGETS = $(addprefix data/raw_catchments/,${COMPANIES:=.zip})
 
-# We seperately download the South West Water shape file because it is not a zip file.
+# We seperately download the South West Water shape file because it is not a zip file. The data were
+# released in response to the environmental information request EIR24252, published at
+# https://www.whatdotheyknow.com/request/catchment_geospatial_data_files/response/2781770. That
+# origin is now behind a Cloudflare challenge which blocks both automated downloads and the web
+# archive's crawler, so we mirror the files unmodified as assets on a release of this repository.
 SOUTH_WEST_WATER_TARGETS = $(addprefix data/raw_catchments/south_west_water.,shx shp prj dbf)
-# TODO: Update to web archive urls once archived.
-SOUTH_WEST_WATER_DOWNLOAD_URL_shp = https://www.whatdotheyknow.com/request/catchment_geospatial_data_files/response/2781770/attach/8/EIR24252%20CATCHMENT%20POLYGONS.shp
-SOUTH_WEST_WATER_DOWNLOAD_URL_shx = https://www.whatdotheyknow.com/request/catchment_geospatial_data_files/response/2781770/attach/9/EIR24252%20CATCHMENT%20POLYGONS.shx
-SOUTH_WEST_WATER_DOWNLOAD_URL_prj = https://www.whatdotheyknow.com/request/catchment_geospatial_data_files/response/2781770/attach/7/EIR24252%20CATCHMENT%20POLYGONS.prj
-SOUTH_WEST_WATER_DOWNLOAD_URL_dbf = https://www.whatdotheyknow.com/request/catchment_geospatial_data_files/response/2781770/attach/6/EIR24252%20CATCHMENT%20POLYGONS.dbf
+SOUTH_WEST_WATER_MIRROR = https://github.com/tillahoffmann/wastewater-catchment-areas/releases/download/raw-catchments-sww
+SOUTH_WEST_WATER_DOWNLOAD_URL_shp = ${SOUTH_WEST_WATER_MIRROR}/south_west_water.shp
+SOUTH_WEST_WATER_DOWNLOAD_URL_shx = ${SOUTH_WEST_WATER_MIRROR}/south_west_water.shx
+SOUTH_WEST_WATER_DOWNLOAD_URL_prj = ${SOUTH_WEST_WATER_MIRROR}/south_west_water.prj
+SOUTH_WEST_WATER_DOWNLOAD_URL_dbf = ${SOUTH_WEST_WATER_MIRROR}/south_west_water.dbf
 
 data/raw_catchments : ${DOWNLOAD_TARGETS} ${SOUTH_WEST_WATER_TARGETS}
 
