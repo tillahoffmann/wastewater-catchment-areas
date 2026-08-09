@@ -6,10 +6,10 @@ import retrying
 
 
 ROOT = 'data/eea.europa.eu'
-# Timestamps for Wayback Machine archives. Versions 2, 3, 5 need older timestamps
+# Timestamps for Wayback Machine archives. Versions 1, 2, 3, 5 need older timestamps
 # because later archives are truncated to 1 MB.
 TABLE = {
-    1: '20190617175711',
+    1: '20150808031425',  # Older timestamp with full 2.8 MB archive
     2: '20180328130948',  # Older timestamp with full 3.2 MB archive
     3: '20180328130948',  # Older timestamp with full 3.2 MB archive
     4: '20190617213439',
@@ -24,7 +24,9 @@ urlretrieve = retrying.retry(wait_exponential_multiplier=1000, stop_max_attempt_
 
 
 def __main__():
-    # Download all eight datasets.
+    # Download all eight datasets, collecting failures so we report every broken version at once
+    # rather than stopping at the first.
+    failures = {}
     for version, key in tqdm(TABLE.items()):
         suffix = f'-{version - 1}' if version > 1 else ''
         url = (
@@ -61,9 +63,14 @@ def __main__():
             print(f'downloaded {directory}.')
         except Exception as ex:
             print(f'failed to download version {version} from {url}: {ex}')
+            failures[version] = ex
         finally:
             if filename and os.path.isfile(filename):
                 os.remove(filename)
+
+    # Fail loudly. Otherwise the missing data only surfaces much later as a checksum mismatch.
+    if failures:
+        raise RuntimeError(f'failed to download versions {sorted(failures)}')
 
 
 if __name__ == '__main__':
