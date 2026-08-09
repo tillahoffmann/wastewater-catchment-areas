@@ -1,4 +1,4 @@
-# Wastewater Catchment Areas in Great Britain
+# Wastewater Catchment Areas in Great Britain [![doi-badge](https://img.shields.io/badge/doi-10.17605/OSF.IO/Z7TSX-green)](https://doi.org/10.17605/OSF.IO/Z7TSX)
 
 This repository provides code to consolidate wastewater catchment areas in Great Britain and evaluate their spatial overlap with statistical reporting units, such as Lower Layer Super Output Areas (LSOAs). Please see the [accompanying publication](https://doi.org/10.1002/essoar.10510612.2) for a detailed description of the analysis. If you have questions about the analysis, code, or accessing the data, please [create a new issue](https://github.com/tillahoffmann/wastewater-catchment-areas/issues/new).
 
@@ -41,6 +41,14 @@ We obtained wastewater catchment area data from sewerage service providers under
   - `identifier`: catchment identifier as used in `catchments_consolidated.*`.
   - `LSOA11CD`: LSOA identifier as used in the 2011 census.
   - `intersection_area`: area of the intersection between the catchment and LSOA in British National Grid projection (approximately square metres).
+
+- `geospatial_population_estimates.csv`: population resident within each catchment by year, joined to the matched treatment works. Catchments without a matched treatment work and treatment works without a matched catchment are both retained, so the treatment works columns may be missing. The columns comprise:
+
+  - `identifier`: catchment identifier as used in `catchments_consolidated.*`.
+  - `year`: year the population estimate applies to.
+  - `norm_total_area`, `norm_area_covered`, and `norm_intersection_sum`: population estimates using three different normalisations of the catchment–LSOA intersection areas, dividing by the total area of the LSOA, the area of the LSOA covered by any catchment, and the sum of all intersections with the LSOA, respectively. The last is used in the accompanying manuscript.
+  - `uwwCode` and `uwwName`: treatment works identifier and name as used in `waterbase_consolidated.csv`.
+  - `name` and `distance`: catchment name and catchment–treatment works distance as used in `waterbase_catchment_lookup.csv`.
 
 ### Environmental Information Requests
 
