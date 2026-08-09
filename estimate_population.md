@@ -119,6 +119,22 @@ summary
 ```
 
 ```python
+# Save the population estimates, outer-joining the catchment-level estimates with the treatment work
+# lookup so that catchments without a matched treatment work (and treatment works without a matched
+# catchment) are both retained.
+geospatial_population_estimates = pd.merge(
+    geospatial_estimate.reset_index(),
+    waterbase_catchment_lookup,
+    on='identifier',
+    how='outer',
+)
+geospatial_population_estimates = geospatial_population_estimates.sort_values(
+    ['identifier', 'year', 'uwwCode'])
+geospatial_population_estimates.to_csv(ROOT / 'geospatial_population_estimates.csv', index=False)
+geospatial_population_estimates.head()
+```
+
+```python
 # Merge the waterbase data (BOD p.e.) with geospatial population estimates for comparison.
 merged = pd.merge(waterbase_catchment_lookup, waterbase_consolidated, on=['uwwCode', 'uwwName'])
 merged = pd.merge(merged, geospatial_estimate, on=['year', 'identifier'])
