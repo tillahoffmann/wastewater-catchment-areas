@@ -141,6 +141,7 @@ analysis : workspace/consolidate_waterbase.html \
 	workspace/consolidate_catchments.html \
 	workspace/match_waterbase_and_catchments.html \
 	workspace/estimate_population.html \
+	${OUTPUT_ROOT}/geospatial_population_estimates.csv \
 	${OUTPUT_ROOT}/catchments_consolidated.zip
 
 ${OUTPUT_ROOT} :
@@ -150,7 +151,8 @@ ${OUTPUT_ROOT}/waterbase_consolidated.csv : workspace/consolidate_waterbase.html
 ${OUTPUT_ROOT}/catchments_consolidated.shp overview.pdf : workspace/consolidate_catchments.html
 ${OUTPUT_ROOT}/waterbase_catchment_lookup.csv : workspace/match_waterbase_and_catchments.html
 ${OUTPUT_ROOT}/lsoa_coverage.csv ${OUTPUT_ROOT}/lsoa_catchment_lookup.csv : workspace/match_catchments_and_lsoas.html
-${OUTPUT_ROOT}/population_estimates.csv population_estimates.pdf estimation_method.pdf : workspace/estimate_population.html
+${OUTPUT_ROOT}/geospatial_population_estimates.csv figures/population-estimates.pdf \
+	figures/estimation_method.pdf : workspace/estimate_population.html
 
 workspace/consolidate_waterbase.html : consolidate_waterbase.md ${OUTPUT_ROOT} data/eea.europa.eu
 	${EXECUTE_NB} $<
